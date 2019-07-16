@@ -1,31 +1,14 @@
 import API from 'lib/API'
-
-import User from 'Model/User'
-
-global.User = new User()
-
-_.mixin({
-  getVal: function (data, prop, defaultVal = '')
-  {
-    const res = _.head(_(data).at(prop).value())
-    return !_.isUndefined(res)
-      ? res
-      : defaultVal
-  }
-}, {
-  chain: false
-})
-
-// 增加moment getDateTime方法
-moment.fn.getDateTime = function ()
-{
-  return this.format('YYYY-MM-DD HH:mm:ss')
-}
-// 增加moment getDate方法
-moment.fn.getDate = function ()
-{
-  return this.format('YYYY-MM-DD')
-}
+import BootstrapVue from 'bootstrap-vue'
+import VeeValidate from 'vee-validate'
+import zh_TW from 'vee-validate/dist/locale/zh_TW'
+import VueBus from 'vue-bus'
+import VCharts from 'v-charts'
+import Loading from 'vue-loading-overlay'
+import 'vue-loading-overlay/dist/vue-loading.css'
+import 'bootstrap/dist/css/bootstrap.css'
+import 'bootstrap-vue/dist/bootstrap-vue.css'
+import { _, moment } from '../../JacTools/index'
 
 export default {
   install: function (Vue, options)
@@ -33,7 +16,7 @@ export default {
     Vue.prototype._ = _
     Vue.prototype.moment = moment
     Vue.prototype.$api = new API()
-    Vue.prototype.User = global.User
+    Vue.use(BootstrapVue)
 
     Vue.filter('dateTime', function (value)
     {
@@ -43,6 +26,21 @@ export default {
     {
       return moment(value).format('YYYY-MM-DD')
     })
+
+    const config = {
+      locale: 'zh_TW',
+      events: 'input|blur',
+      dictionary: {zh_TW},
+      errorBagName: 'errorBags', // change if property conflicts.
+      fieldsBagName: 'fieldBags'
+    }
+    zh_TW.messages.required = () => '這個欄位是必填'
+    zh_TW.messages.length = () => '長度錯誤'
+
+    Vue.use(VeeValidate, config)
+    Vue.use(VueBus)
+    Vue.use(VCharts)
+    Vue.use(Loading)
   }
 }
 

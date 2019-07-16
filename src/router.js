@@ -9,67 +9,9 @@ export default new Router({
   routes: [
     {
       path: '/',
-      component: () => import('pages/Main'),
-      children: [
-        {
-          path: 'backend',
-          component: () => import('pages/Main/Backend'),
-          children: [
-            {
-              path: 'user-manage',
-              name: 'user-manage',
-              component: () => import('pages/Main/Backend/UserManage')
-            },
-            {
-              path: 'account-manage',
-              name: 'account-manage',
-              component: () => import('pages/Main/Backend/AccountManage')
-            },
-            {
-              path: 'sys-manage',
-              name: 'sys-manage',
-              component: () => import('pages/Main/Backend/SysManage')
-            }
-          ]
-        },
-        {
-          path: 'option',
-          component: () => import('pages/Main/Option'),
-          children: [
-            {
-              path: 'week-item',
-              name: 'week-item',
-              component: () => import('pages/Main/Option/WeekItem')
-            },
-            {
-              path: 'month-item',
-              name: 'month-item',
-              component: () => import('pages/Main/Option/MonthItem')
-            },
-            {
-              path: 'quotation',
-              name: 'quotation',
-              component: () => import('pages/Main/Option/Quotation')
-            },
-            {
-              path: 'volume-and-price',
-              name: 'volume-and-price',
-              component: () => import('pages/Main/Option/VolumeAndPrice')
-            }
-          ]
-        },
-        {
-          path: 'history-analysis',
-          name: 'history-analysis',
-          component: () => import('pages/Main/HistoryAnalysis')
-        }
-      ]
+      name: 'main',
+      component: () => import('pages/Main')
     },
-    {
-      path: '/login',
-      name: 'login',
-      component: () => import('pages/Login')
-    },
-    {path: '*', redirect: '/login'}
+    {path: '*', redirect: '/'}
   ]
 })
