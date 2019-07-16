@@ -1,0 +1,39 @@
+{
+  "name": "MoneyMaker",
+  "displayName": "MoneyMaker",
+  "version": "1.0.0",
+  "description": "A sample Apache Cordova application that responds to the deviceready event.",
+  "main": "index.js",
+  "scripts": {
+    "dev": "vue-cli-service serve",
+    "build": "vue-cli-service build"
+  },
+  "author": "Jac",
+  "license": "Apache-2.0",
+  "private": true,
+  "dependencies": {
+    "@vue/cli": "^3.2.1",
+    "axios": "^0.18.0",
+    "bootstrap": "^4.3.1",
+    "bootstrap-vue": "^2.0.0-rc.20",
+    "lodash": "^4.17.11",
+    "moment": "^2.23.0",
+    "qs": "^6.6.0",
+    "stylus": "^0.54.5",
+    "stylus-loader": "^3.0.2",
+    "v-charts": "^1.19.0",
+    "vee-validate": "^2.1.4",
+    "vue": "^2.6.10",
+    "vue-bus": "^1.2.1",
+    "vue-loading-overlay": "^3.2.0",
+    "vue-router": "^3.0.1",
+    "vuex": "^3.0.1",
+    "vuex-persistedstate": "^2.5.4"
+  },
+  "devDependencies": {
+    "@babel/plugin-transform-modules-commonjs": "^7.4.3",
+    "@vue/cli-plugin-babel": "^3.2.0",
+    "@vue/cli-service": "^3.2.0",
+    "vue-template-compiler": "^2.6.10"
+  }
+}

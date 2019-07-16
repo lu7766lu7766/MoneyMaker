@@ -1,0 +1,38 @@
+{
+  "item-informed": {
+    "uri": "option-item-informed",
+    "method": "get"
+  },
+  "chip-accumulation": {
+    "uri": "option-chip-accumulation",
+    "method": "get"
+  },
+  "txo": {
+    "uri": "txo",
+    "method": "get"
+  },
+  "option-chip": {
+    "uri": "option-chip",
+    "method": "get"
+  },
+  "futures-chip": {
+    "uri": "futures-chip",
+    "method": "get"
+  },
+  "history": {
+    "uri": "history",
+    "method": "get"
+  },
+  "info": {
+    "uri": "info",
+    "method": "get"
+  },
+  "today-item": {
+    "uri": "option-today-item",
+    "method": "get"
+  },
+  "today-item-must-volume": {
+    "uri": "option-today-item-must-volume",
+    "method": "get"
+  }
+}
