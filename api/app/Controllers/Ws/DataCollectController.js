@@ -10,6 +10,11 @@ class DataCollectController
     this.auth = auth
   }
 
+  async onTest(msg)
+  {
+    console.log(msg)
+  }
+
   async onJoin()
   {
     const user = {
