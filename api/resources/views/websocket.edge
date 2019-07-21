@@ -34,9 +34,6 @@
   </div>
 </div>
 
-<script>
-  window.username = '{{ username }}'
-</script>
 {{ script('https://cdnjs.cloudflare.com/ajax/libs/babel-polyfill/6.26.0/polyfill.min.js') }}
 {{ script('https://unpkg.com/@adonisjs/websocket-client@1.0.9/dist/Ws.browser.js') }}
 {{ script('https://unpkg.com/jquery@3.3.1/dist/jquery.js') }}
@@ -45,32 +42,35 @@
 
   $(function () {
     // Only connect when username is available
-    if (window.username) {
-      startChat()
-    }
+    startChat()
   })
 
   function startChat () {
     ws = adonis.Ws().connect()
 
     ws.on('open', () => {
-      $('.connection-status').addClass('connected')
+      // $('.connection-status').addClass('connected')
       // subscribeToChannel()
-      const dataTransfer = ws.subscribe('DataTransfer')
-
-      dataTransfer.on('ready', () => {
-        dataTransfer.emit('message', 'hello')
+      const subscriber = ws.subscribe('DataCollect')
+      
+      subscriber.on('ready', () => {
+        subscriber.emit('test', 'hello')
+      })
+      subscriber.on('test', (msg) => {
+        document.write = msg
+        //subscriber.emit('message', 'hello')
       })
     })
 
     ws.on('error', () => {
-      $('.connection-status').removeClass('connected')
+      // $('.connection-status').removeClass('connected')
     })
   }
 </script>
 <script type="module">
-let ws = new WebSocket('ws://127.0.0.1:3333/adonis-ws');
-const channel = 'DataTransfer'
+// let ws = new WebSocket('ws://127.0.0.1:3333/adonis-ws');
+const channel = 'DataCollect'
+const event = 'test'
 ws.onopen = function(){
   //Subscribe to the channel
   ws.send(
@@ -91,7 +91,7 @@ ws.onmessage = function(msg) {
         t: 7,
         d: {
           topic: channel,
-          event: 'message',
+          event: event,
           data: 'data'
         }
       })

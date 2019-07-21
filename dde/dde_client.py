@@ -4,13 +4,17 @@ from datetime import datetime, timedelta
 import sys
 import time
 import numpy as np
+import AdonisWS
+import json
 
 oldValue = []
-
+ws = AdonisWS.Client("ws://localhost:3333/adonis-ws")
+ws.subscripbe("DataCollect")
 
 def fimtxnReciver(value, item):
   global oldValue
   aValue = value.split(";")
+  print(aValue)
   if (np.array_equal(aValue, oldValue)):
     return
 
@@ -34,10 +38,19 @@ def fimtxnReciver(value, item):
   low = aValue[3]
   # print(int(float(aValue[4])))
   volume = aValue[4].split('.')[0]
-  out_string = "date: %s; price:%s; open:%s; high:%s; low:%s; volume:%s; - %s" % (
-      date, price, open, high, low, volume, now)
+  #out_string = "date: %s; price:%s; open:%s; high:%s; low:%s; volume:%s; - %s" % (
+  #    date, price, open, high, low, volume, now)
   # datetime.datetime.now()
-  print(out_string)
+  #print(out_string)
+  ws.emit("bordcast", json.dumps({
+    "date": date,
+    "price": price,
+    "open": open,
+    "high": high,
+    "low": low,
+    "volume": volume,
+    "created_at": now
+  }))
 
   oldValue = aValue
   #f2.write(out_string + "\n")

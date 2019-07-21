@@ -7,49 +7,46 @@ import time
 import json
 
 
-def JSONstrigify(json):
-  return json.dumps(json, separators=(',', ': '))
+def JSONstrigify(obj):
+  return json.dumps(obj)
 
 def JSONparse(str):
   return json.loads(str)
 
 class Client:
+
+  wait_secs = 5 # continue waiting secs
+
   def __init__(self, host):
+    print("### construct ### host:%s" % host)
     ws = websocket.WebSocket()
     ws.connect(host)
-    ws.on_message = self.on_message
-    ws.on_error = self.on_error
-    ws.on_open = self.on_open
-    ws.on_close = self.on_close
     self.__ws = ws
-
-  def on_message(self, ws, message):
-    # print(message)
-    res = JSONparse(message)
-    print(res)
-
-  def on_error(self, ws, error):
-    print(error)
-
-  def on_close(self, ws):
-	print("### closed ###")
-
-  def on_open(self, ws):
-    def run(*args):
-		ws.send("Hello world")
-		time.sleep(1)
-    thread.start_new_thread(run, ())
+    self.__ws.recv()
+    thread.start_new_thread(self.waiting, ())
 
   def subscripbe(self, channel):
+    print("### subscripbe ###%s" % channel)
     self.__channel = channel
     self.__ws.send(JSONstrigify({"t": 1, "d": {"topic": channel}}))
+    self.__ws.recv()
 
-  def send(self, event, message):
+  def emit(self, event, data):
+    print("### emit ### event:%s, message:%s" % (event, data))
     self.__ws.send(JSONstrigify({
         "t": 7,
         "d": {
             "topic": self.__channel,
             "event": event,
-            "data": message
+            "data": data
         }
     }))
+    # result = self.__ws.recv()
+    # print("Received '%s'" % result)
+
+  def waiting(self):
+    while True:
+      time.sleep(self.wait_secs)
+      self.__ws.send(JSONstrigify({"t":8}))
+      # result = self.__ws.recv()
+      # print("Received '%s'" % result)
