@@ -15,5 +15,4 @@
 
 const Ws = use('Ws')
 
-Ws.channel('DataCollect', 'DataCollectController') // .middleware(['auth'])
-
+Ws.channel('DataCollect', 'DataCollectController')
