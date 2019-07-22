@@ -14,7 +14,7 @@ ws.subscripbe("DataCollect")
 def fimtxnReciver(value, item):
   global oldValue
   aValue = value.split(";")
-  print(aValue)
+  
   if (np.array_equal(aValue, oldValue)):
     return
 
