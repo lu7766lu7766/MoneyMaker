@@ -216,10 +216,22 @@ module.exports = {
     | For a different directory, set an absolute path for the filename.
     |
     */
-    file: {
+    error: {
       driver: 'file',
       name: 'adonis-app',
-      filename: 'adonis.log',
+      filename: 'error.log',
+      level: 'error'
+    },
+    info: {
+      driver: 'file',
+      name: 'adonis-app',
+      filename: 'info.log',
+      level: 'info'
+    },
+    test: {
+      driver: 'file',
+      name: 'adonis-app',
+      filename: 'test.log',
       level: 'info'
     }
   },
