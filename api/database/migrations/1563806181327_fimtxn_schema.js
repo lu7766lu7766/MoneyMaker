@@ -10,7 +10,7 @@ class FimtxnSchema extends Schema
     this.dropTableIfExists('fimtxn')
     this.create('fimtxn', (table) =>
     {
-      table.date('date').comment('開盤日期').notNullable().index()
+      table.string('date', 10).comment('開盤日期').notNullable().index()
       table.integer('price', 10).comment('price').notNullable()
       table.integer('open', 10).comment('open').notNullable()
       table.integer('high', 10).default(0).comment('high').notNullable()

@@ -12,9 +12,10 @@ class DataCollectController
 
   async onInit(date)
   {
-    return await FimtxnModel.query()
+    const res = await FimtxnModel.query()
       .where('date', date)
       .fetch()
+    this.socket.emitTo('init', res, [this.socket.id])
   }
 
   async onBordcast(data)
