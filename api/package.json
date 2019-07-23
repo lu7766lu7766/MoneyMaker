@@ -8,7 +8,9 @@
     "start": "node server.js",
     "test": "node ace test",
     "dev": "adonis serve --dev",
-    "db:refresh": "adonis migration:refresh"
+    "db:refresh": "adonis migration:refresh",
+    "task:run": "node ace run:scheduler",
+    "dde": "python ../dde/dde_client.py"
   },
   "keywords": [
     "adonisjs",
@@ -30,6 +32,7 @@
     "@adonisjs/session": "^1.0.27",
     "@adonisjs/shield": "^1.0.8",
     "@adonisjs/websocket": "^1.0.11",
+    "adonis-scheduler": "^3.0.2",
     "mysql": "^2.17.1"
   },
   "devDependencies": {},
