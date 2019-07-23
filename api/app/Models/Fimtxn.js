@@ -9,4 +9,4 @@ class Fimtxn extends Model {
   }
 }
 
-module.exports = Fption
+module.exports = Fimtxn

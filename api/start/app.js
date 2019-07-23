@@ -1,5 +1,7 @@
 'use strict'
 
+const path = require('path')
+
 /*
 |--------------------------------------------------------------------------
 | Providers
@@ -20,7 +22,8 @@ const providers = [
   '@adonisjs/session/providers/SessionProvider',
   '@adonisjs/auth/providers/AuthProvider',
   '@adonisjs/websocket/providers/WsProvider',
-  '@adonisjs/redis/providers/RedisProvider'
+  '@adonisjs/redis/providers/RedisProvider',
+  path.join(__dirname, '..', 'providers', 'AppProvider'),
 ]
 
 /*
