@@ -48,7 +48,6 @@ def fimtxnReciver(value, item):
   high = aValue[2]
   low = aValue[3]
   # print(int(float(aValue[4])))
-  volume = aValue[4].split('.')[0]
   #out_string = "date: %s; price:%s; open:%s; high:%s; low:%s; volume:%s; - %s" % (
   #    date, price, open, high, low, volume, now)
   # datetime.datetime.now()
@@ -61,7 +60,6 @@ def fimtxnReciver(value, item):
         "open": open,
         "high": high,
         "low": low,
-        "volume": volume,
         "created_at": now
       }))
       break
@@ -90,7 +88,7 @@ while True:
 
 print("Connected to DDE server, start listening...")
 # 股票/期貨代號,名稱,時間,買進,賣出,成交,單量,總量,高點,低點,開盤
-dde.advise("FIMTXN*1.TF-preclose,Open,High,Low,TotalVolume", callback=fimtxnReciver)
+dde.advise("FIMTXN*1.TF-preclose,Open,High,Low", callback=fimtxnReciver)
 PyWinDDE.WinMSGLoop()
 
 
