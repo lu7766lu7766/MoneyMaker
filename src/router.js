@@ -19,7 +19,7 @@ export default new Router({
         {
           path: 'action',
           name: 'action',
-          component: () => import('pages/Action')
+          component: () => import('pages/Main')
         }
       ]
     },

@@ -1,5 +1,5 @@
 <template>
-
+  <div>action</div>
 </template>
 
 <script>
@@ -7,7 +7,3 @@
     name: 'Action'
   }
 </script>
-
-<style scoped>
-
-</style>
