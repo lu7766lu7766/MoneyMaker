@@ -5,7 +5,7 @@
     </b-navbar>
 
     <div class="layout-content">
-      <router-view />
+      <router-view :date="date" :datas="datas" @change="onDateChange" />
     </div>
     <div class="layout-copy">
       2011-2019 &copy; JacWang
@@ -15,28 +15,55 @@
 
 <script>
   export default {
-    data: () => ({
-      ws: null,
-      subscriber: null,
-      channel: 'DataCollect',
-      datas: []
-    }),
-    mounted()
+    data: () =>
     {
-      this.ws = adonis.Ws('ws://localhost:3333').connect()
+      const initSubDay = moment().isBefore(moment().format('YYYY-MM-DD 15:00:00'))
+        ? 1
+        : 0
+      return {
+        ws: null,
+        subscriber: null,
+        host: 'ws://localhost:3333',
+        channel: 'DataCollect',
+        date: moment().subtract(initSubDay, 'days').getDate(),
+        datas: []
+      }
+    },
+    methods: {
+      onDateChange(date)
+      {
+        this.date = date
+        this.$bus.emit('init', date)
+      }
+    },
+    created()
+    {
+      this.ws = adonis.Ws(this.host).connect()
       this.ws.on('open', () =>
       {
         this.subscriber = this.ws.subscribe(this.channel)
         this.subscriber.on('init', datas =>
         {
-          console.log(datas)
+          this.datas = datas
         })
         this.subscriber.on('advice', data =>
         {
-          console.log(data)
+          //console.log(data)
+          if (data.date === this.date)
+          {
+            this.datas.push(data)
+          }
         })
-        this.subscriber.emit('init', '2019-07-22')
+        this.$bus.on('init', date =>
+        {
+          this.subscriber.emit('init', date)
+        })
+        this.$bus.emit('ws.ready')
       })
+    },
+    destroyed()
+    {
+      this.$bus.off('init')
     }
   }
 </script>
