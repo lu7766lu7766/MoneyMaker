@@ -43,7 +43,7 @@ def fimtxnReciver(value, item):
     date = datetime.today().strftime("%Y-%m-%d")
 
   # print(date)
-  price = aValue[0]
+  close = aValue[0]
   open = aValue[1]
   high = aValue[2]
   low = aValue[3]
@@ -57,7 +57,7 @@ def fimtxnReciver(value, item):
     try:
       ws.emit("bordcast", json.dumps({
         "date": date,
-        "price": price,
+        "close": close,
         "open": open,
         "high": high,
         "low": low,
@@ -90,7 +90,7 @@ while True:
 
 print("Connected to DDE server, start listening...")
 # 股票/期貨代號,名稱,時間,買進,賣出,成交,單量,總量,高點,低點,開盤
-dde.advise("FIMTXN*1.TF-price,Open,High,Low,TotalVolume", callback=fimtxnReciver)
+dde.advise("FIMTXN*1.TF-preclose,Open,High,Low,TotalVolume", callback=fimtxnReciver)
 PyWinDDE.WinMSGLoop()
 
 

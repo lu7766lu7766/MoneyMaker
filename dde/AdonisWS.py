@@ -22,14 +22,16 @@ class Client:
     ws = websocket.WebSocket()
     ws.connect(host)
     self.__ws = ws
-    self.__ws.recv()
+    result = self.__ws.recv()
+    # print(result)
     thread.start_new_thread(self.waiting, ())
 
   def subscripbe(self, channel):
     print("### subscripbe - channel: %s" % channel)
     self.__channel = channel
     self.__ws.send(JSONstrigify({"t": 1, "d": {"topic": channel}}))
-    self.__ws.recv()
+    result = self.__ws.recv()
+    # print(result)
 
   def emit(self, event, data):
     print("### emit - event: %s, message: %s" % (event, data))
