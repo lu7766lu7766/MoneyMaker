@@ -7,9 +7,20 @@ import numpy as np
 import AdonisWS
 import json
 
+def wsConnect():
+  global ws
+  while True:
+    try:
+      ws = AdonisWS.Client("ws://localhost:3333/adonis-ws")
+      ws.subscripbe("DataCollect")
+      break
+    except:
+      print("WS can't connect server, will try again...")
+      time.sleep(3)
+      wsConnect()
+      
 oldValue = []
-ws = AdonisWS.Client("ws://localhost:3333/adonis-ws")
-ws.subscripbe("DataCollect")
+wsConnect()
 
 def fimtxnReciver(value, item):
   global oldValue
@@ -42,15 +53,24 @@ def fimtxnReciver(value, item):
   #    date, price, open, high, low, volume, now)
   # datetime.datetime.now()
   #print(out_string)
-  ws.emit("bordcast", json.dumps({
-    "date": date,
-    "price": price,
-    "open": open,
-    "high": high,
-    "low": low,
-    "volume": volume,
-    "created_at": now
-  }))
+  while True:
+    try:
+      ws.emit("bordcast", json.dumps({
+        "date": date,
+        "price": price,
+        "open": open,
+        "high": high,
+        "low": low,
+        "volume": volume,
+        "created_at": now
+      }))
+      break
+    except:
+      print("WS disconnect try again...")
+      time.sleep(3)
+      wsConnect()
+      
+      
 
   oldValue = aValue
   #f2.write(out_string + "\n")
@@ -72,3 +92,6 @@ print("Connected to DDE server, start listening...")
 # 股票/期貨代號,名稱,時間,買進,賣出,成交,單量,總量,高點,低點,開盤
 dde.advise("FIMTXN*1.TF-price,Open,High,Low,TotalVolume", callback=fimtxnReciver)
 PyWinDDE.WinMSGLoop()
+
+
+  
