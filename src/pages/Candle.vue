@@ -1,0 +1,91 @@
+<template>
+  <div>
+    <b-form-select :value="date" :options="dateList" @change="onDateChange"></b-form-select>
+    <ve-candle :data="chartData" :settings="chartSettings" :after-config="getChartConfig"></ve-candle>
+  </div>
+</template>
+
+<script>
+  import IndexMixins from 'mixins/index'
+
+  export default {
+    mixins: [IndexMixins],
+    props: ['date'],
+    data: () =>
+    {
+      const initSubDay = moment().isBefore(moment().format('YYYY-MM-DD 15:00:00'))
+        ? 1
+        : 0
+      const dateList = []
+      _.range(0, 5).forEach(index =>
+      {
+        dateList.push(moment().subtract(index + initSubDay, 'days').getDate())
+      })
+      return {
+        dateList
+      }
+    },
+    methods: {
+      onDateChange(date)
+      {
+        this.$emit('change', date)
+      },
+      getChartConfig(options) {
+        // console.log(options.series)
+        options.series[0].name = '小型台指近月'
+        options.series[0].markPoint = {
+          data: _.map(this.actions, action => ({
+            coord: [action.created_at, action.price],
+            value: action.price,
+            itemStyle: {
+              normal: {color: action.type > 0 ? 'rgb(255,0,0)' : 'rgb(41,60,85)'}
+            }
+          }))
+        }
+        options.title = {
+          text: '小型台指近月'
+        }
+        options.legend = {
+          // data: ['小型台指近月'],
+          show: false
+        }
+        return options
+      }
+    },
+    computed: {
+      chartData()
+      {
+        // 小型台指近月
+        return {
+          columns: ['time', 'open', 'close', 'lowest', 'highest'],
+          rows: _.map(this.datas, data => ({
+            'time': data.created_at,
+            'open': data.open,
+            'close': data.close,
+            'lowest': data.low,
+            'highest': data.high
+          }))
+        }
+      },
+      chartSettings() {
+        return {
+          showDataZoom: true,
+          start: 0,
+          end: 100
+        }
+      }
+    },
+    mounted()
+    {
+      this.$bus.on('ws.ready', () =>
+      {
+        console.log('ws.ready')
+        this.$emit('change', this.dateList[0])
+      })
+    },
+    destroyed()
+    {
+      this.$bus.off('ws.ready')
+    }
+  }
+</script>

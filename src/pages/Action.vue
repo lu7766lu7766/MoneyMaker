@@ -1,9 +1,14 @@
 <template>
-  <div>action</div>
+  <div>
+  actions
+  </div>
 </template>
 
 <script>
+  import IndexMixins from 'mixins/index'
+
   export default {
-    name: 'Action'
+    mixins: [IndexMixins],
+
   }
 </script>

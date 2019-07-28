@@ -1,11 +1,14 @@
 <template>
   <div class="layout">
     <b-navbar toggleable="lg" type="dark" variant="dark">
-      <b-navbar-brand href="#">金多寶</b-navbar-brand>
+      <b-navbar-brand :to="{
+        name: $route.name === 'action' ? 'main' : 'action'
+      }">金多寶</b-navbar-brand>
     </b-navbar>
 
     <div class="layout-content">
-      <router-view :date="date" :datas="datas" @change="onDateChange" />
+      <candle :date="date" @change="onDateChange" />
+      <action v-if="$route.name === 'action' && date === firstDate" />
     </div>
     <div class="layout-copy">
       2011-2019 &copy; JacWang
@@ -14,26 +17,30 @@
 </template>
 
 <script>
+  import IndexMixins from 'mixins/index'
+
   export default {
+    mixins: [IndexMixins],
+    components: {
+      Candle: require('./Candle').default,
+      Action: require('./Action').default
+    },
     data: () =>
     {
-      const initSubDay = moment().isBefore(moment().format('YYYY-MM-DD 15:00:00'))
-        ? 1
-        : 0
       return {
         ws: null,
-        subscriber: null,
         host: 'ws://localhost:3333',
         channel: 'DataCollect',
-        date: moment().subtract(initSubDay, 'days').getDate(),
-        datas: []
+        date: '',
+        firstDate: null
       }
     },
     methods: {
       onDateChange(date)
       {
         this.date = date
-        this.$bus.emit('init', date)
+        this.firstDate = this.firstDate || date
+        this.$root.subscriber.emit('init', date)
       }
     },
     created()
@@ -41,29 +48,39 @@
       this.ws = adonis.Ws(this.host).connect()
       this.ws.on('open', () =>
       {
-        this.subscriber = this.ws.subscribe(this.channel)
-        this.subscriber.on('init', datas =>
+        this.$root.subscriber = this.ws.subscribe(this.channel)
+        // when date changed or get datas and actions
+        this.$root.subscriber.on('init', res =>
         {
-          this.datas = datas
+          this.setActions(res.actions)
+          this.setDatas(res.datas)
         })
-        this.subscriber.on('advice', data =>
+        // when service has new data
+        this.$root.subscriber.on('advice', data =>
         {
-          //console.log(data)
           if (data.date === this.date)
           {
-            this.datas.push(data)
+            this.setDatas(_.concat(this.datas, data))
           }
+          // always checking todoActions
+          this.setTodoActions(_.filter(this.todoActions, action => {
+            if (action.price < data.high && action.price > data.low) {
+              this.subscriber.emit('action', action)
+              return false
+            }
+            return true
+          }))
         })
-        this.$bus.on('init', date =>
+        // when action subit success
+        this.$root.subscriber.on('action', data =>
         {
-          this.subscriber.emit('init', date)
+          if (data.date === this.date)
+          {
+            this.setActions(_.concat(this.actions, data))
+          }
         })
         this.$bus.emit('ws.ready')
       })
-    },
-    destroyed()
-    {
-      this.$bus.off('init')
     }
   }
 </script>

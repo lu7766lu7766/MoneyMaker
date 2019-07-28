@@ -9,19 +9,13 @@ export default new Router({
   routes: [
     {
       path: '/',
-      component: () => import('pages/Index'),
-      children: [
-        {
-          path: '',
-          name: 'main',
-          component: () => import('pages/Main')
-        },
-        {
-          path: 'action',
-          name: 'action',
-          component: () => import('pages/Main')
-        }
-      ]
+      name: 'main',
+      component: () => import('pages/Index')
+    },
+    {
+      path: '/action',
+      name: 'action',
+      component: () => import('pages/Index')
     },
     {path: '*', redirect: '/'}
   ]

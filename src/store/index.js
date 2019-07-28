@@ -6,9 +6,21 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    version: 0
+    actions: [],
+    todoActions: [],
+    datas: []
   },
-  mutations: {},
+  mutations: {
+    SET_ACTIONS(state, datas) {
+      state.actions = datas
+    },
+    SET_TODO_ACTIONS(state, datas) {
+      state.todoActions = datas
+    },
+    SET_DATAS(state, datas) {
+      state.datas = datas
+    }
+  },
   actions: {},
   plugins: [createPersistedState()]
 })
