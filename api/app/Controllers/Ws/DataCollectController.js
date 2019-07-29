@@ -14,7 +14,7 @@ class DataCollectController
   async onInit(date)
   {
     this.socket.emitTo('init', {
-      datas:  await FimtxnModel.query()
+      datas: await FimtxnModel.query()
         .where('date', date)
         .fetch(),
       actions: await ActionModel.query()
@@ -32,10 +32,7 @@ class DataCollectController
 
   async onAction(data)
   {
-    data = JSON.parse(data)
-    await DB.table('actions').insert(Object.assign(data, {
-      created_at: moment().getDateTime()
-    }))
+    await DB.table('actions').insert(data)
     this.socket.emitTo('action', data, [this.socket.id])
   }
 

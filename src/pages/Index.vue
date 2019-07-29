@@ -66,7 +66,8 @@
           this.setTodoActions(_.filter(this.todoActions, action => {
             if (action.price < data.high && action.price > data.low) {
               this.$root.subscriber.emit('action', Object.assign(action, {
-                date: this.date
+                date: data.date,
+                created_at: data.created_at
               }))
               return false
             }

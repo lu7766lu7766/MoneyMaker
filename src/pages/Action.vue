@@ -21,7 +21,7 @@
       </div>
 
       <div class="col-md-4">
-        <h4>待處理</h4>
+        <h4>預掛</h4>
         <div class="todo-list">
           <div class="todo"
                v-for="(action, index) in todoActions"
@@ -46,7 +46,7 @@
     props: ['date'],
     mixins: [IndexMixins],
     data: () => ({
-      price: 0
+      price: 10000
     }),
     methods: {
       addTodoAction(type)
@@ -58,10 +58,12 @@
       },
       addAction(type)
       {
+        const lastData = _.last(this.datas)
         this.$root.subscriber.emit('action', {
-          price: this.price,
+          date: this.date,
+          price: lastData.close,
           type,
-          date: this.date
+          created_at: lastData.created_at
         })
       }
     },

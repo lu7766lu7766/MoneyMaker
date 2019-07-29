@@ -1,7 +1,7 @@
 <template>
   <div>
     <b-form-select :value="date" :options="dateList" @change="onDateChange"></b-form-select>
-    <ve-candle :data="chartData" :settings="chartSettings" :after-config="getChartConfig"></ve-candle>
+    <ve-candle :data="chartData" :settings="chartSettings" :after-config="getChartConfig" :markPoint="markPoint"></ve-candle>
   </div>
 </template>
 
@@ -32,16 +32,16 @@
       },
       getChartConfig(options) {
         // console.log(options.series)
-        options.series[0].name = '小型台指近月'
-        options.series[0].markPoint = {
-          data: _.map(this.actions, action => ({
-            coord: [action.created_at, action.price],
-            value: action.price,
-            itemStyle: {
-              normal: {color: action.type > 0 ? 'rgb(255,0,0)' : 'rgb(41,60,85)'}
-            }
-          }))
-        }
+        // options.series[0].name = '小型台指近月'
+        // options.series[0].markPoint = {
+        //   data: _.map(this.actions, action => ({
+        //     coord: [action.created_at, action.price],
+        //     value: action.price,
+        //     itemStyle: {
+        //       normal: {color: action.type > 0 ? 'rgb(255,0,0)' : 'rgb(41,60,85)'}
+        //     }
+        //   }))
+        // }
         options.title = {
           text: '小型台指近月'
         }
@@ -72,6 +72,17 @@
           showDataZoom: true,
           start: 0,
           end: 100
+        }
+      },
+      markPoint() {
+        return {
+          data: _.map(this.actions, action => ({
+            coord: [action.created_at, action.price],
+            value: action.price,
+            itemStyle: {
+              normal: {color: action.type > 0 ? 'rgb(255,0,0)' : 'rgb(41,60,85)'}
+            }
+          }))
         }
       }
     },
