@@ -27,6 +27,9 @@
                v-for="(action, index) in todoActions"
                :key="index"
                :class="action.type > 0 ? 'buy': 'sell'">
+            <button type="button" class="close" @click="deleteTodoAction(index)">
+              <span aria-hidden="true">&times;</span>
+            </button>
             {{ action.price }}
           </div>
         </div>
@@ -55,6 +58,9 @@
           price: this.price,
           type
         }))
+      },
+      deleteTodoAction(index) {
+        this.setTodoActions(_.filter(this.todoActions, (v, i) => i !== index))
       },
       addAction(type)
       {
