@@ -33,7 +33,9 @@ class DataCollectController
   async onAction(data)
   {
     data = JSON.parse(data)
-    await DB.table('actions').insert(data)
+    await DB.table('actions').insert(Object.assign(data, {
+      created_at: moment().getDateTime()
+    }))
     this.socket.emitTo('action', data, [this.socket.id])
   }
 

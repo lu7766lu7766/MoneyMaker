@@ -8,7 +8,7 @@
 
     <div class="layout-content">
       <candle :date="date" @change="onDateChange" />
-      <action v-if="$route.name === 'action' && date === firstDate" />
+      <action v-if="$route.name === 'action' && date === firstDate" :date="date" />
     </div>
     <div class="layout-copy">
       2011-2019 &copy; JacWang
@@ -65,7 +65,9 @@
           // always checking todoActions
           this.setTodoActions(_.filter(this.todoActions, action => {
             if (action.price < data.high && action.price > data.low) {
-              this.subscriber.emit('action', action)
+              this.$root.subscriber.emit('action', Object.assign(action, {
+                date: this.date
+              }))
               return false
             }
             return true
