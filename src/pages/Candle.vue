@@ -32,7 +32,7 @@
       },
       getChartConfig(options) {
         // console.log(options.series)
-        // options.series[0].name = '小型台指近月'
+        options.series[0].name = '小型台指近月'
         // options.series[0].markPoint = {
         //   data: _.map(this.actions, action => ({
         //     coord: [action.created_at, action.price],
