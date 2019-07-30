@@ -1,6 +1,3 @@
-import BuySound from 'src/assets/buy.mp3'
-import SellSound from 'src/assets/sell.mp3'
-
 export default {
   methods: {
     setActions(actions) {
@@ -11,13 +8,6 @@ export default {
     },
     setDatas(datas) {
       this.$store.commit('SET_DATAS', datas)
-    },
-    emitAction(data)
-    {
-      (new Audio(data.type > 0
-        ? BuySound
-        : SellSound)).play()
-      this.$root.subscriber.emit('action', data)
     }
   },
   computed: {

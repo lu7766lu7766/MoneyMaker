@@ -18,6 +18,8 @@
 
 <script>
   import IndexMixins from 'mixins/index'
+  import BuySound from 'src/assets/buy.mp3'
+  import SellSound from 'src/assets/sell.mp3'
 
   export default {
     mixins: [IndexMixins],
@@ -65,7 +67,7 @@
           // always checking todoActions
           this.setTodoActions(_.filter(this.todoActions, action => {
             if (action.price < data.high && action.price > data.low) {
-              this.emitAction(Object.assign(action, {
+              this.$root.subscriber.emit('action', Object.assign(action, {
                 date: data.date,
                 created_at: data.created_at
               }))
@@ -74,9 +76,12 @@
             return true
           }))
         })
-        // when action subit success
+        // when action submit success
         this.$root.subscriber.on('action', data =>
         {
+          (new Audio(data.type > 0
+            ? BuySound
+            : SellSound)).play()
           if (data.date === this.date)
           {
             this.setActions(_.concat(this.actions, data))

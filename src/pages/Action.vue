@@ -67,7 +67,7 @@
 
         if (lastData)
         {
-          this.emitAction({
+          this.$root.subscriber.emit('action', {
             date: this.date,
             price: lastData.close,
             type,
