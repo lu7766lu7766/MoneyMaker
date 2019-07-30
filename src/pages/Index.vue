@@ -20,6 +20,8 @@
   import IndexMixins from 'mixins/index'
   import BuySound from 'src/assets/buy.mp3'
   import SellSound from 'src/assets/sell.mp3'
+  import Hosts from 'config/Hosts'
+  import env from 'src/../env'
 
   export default {
     mixins: [IndexMixins],
@@ -31,7 +33,7 @@
     {
       return {
         ws: null,
-        host: 'ws://localhost:3333',
+        host: Hosts[env.target],
         channel: 'DataCollect',
         date: '',
         firstDate: null

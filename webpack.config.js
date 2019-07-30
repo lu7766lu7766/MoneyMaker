@@ -18,6 +18,7 @@ module.exports = {
       resource: resolve('resource'),
       ApiConstants: resolve('api/app/Constants'),
       Constants: resolve('src/constants'),
+      Config: resolve('src/config'),
       Model: resolve('src/lib/Model'),
       '@': resolve('src/components'),
       'pages': resolve('src/pages')
