@@ -44,7 +44,6 @@
 
 <script>
   import IndexMixins from 'mixins/index'
-
   export default {
     props: ['date'],
     mixins: [IndexMixins],
@@ -65,12 +64,20 @@
       addAction(type)
       {
         const lastData = _.last(this.datas)
-        this.$root.subscriber.emit('action', {
-          date: this.date,
-          price: lastData.close,
-          type,
-          created_at: lastData.created_at
-        })
+
+        if (lastData)
+        {
+          this.emitAction({
+            date: this.date,
+            price: lastData.close,
+            type,
+            created_at: lastData.created_at
+          })
+        }
+        else
+        {
+          this.addTodoAction(type)
+        }
       }
     },
     computed: {
