@@ -1,4 +1,4 @@
 {
   "local": "ws://localhost:3333",
-  "stable": "ws://money-maker:3333"
+  "stable": "ws://mm-server:3333"
 }

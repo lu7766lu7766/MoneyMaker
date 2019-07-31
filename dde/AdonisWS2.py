@@ -35,7 +35,7 @@ def connect(host):
   global ws
   websocket.enableTrace(True)
   print("### construct ### host:%s" % host)
-  ws = websocket.WebSocketApp("ws://echo.websocket.org/",
+  ws = websocket.WebSocketApp(host,
                             on_message = on_message,
                             on_error = on_error,
                             on_close = on_close)

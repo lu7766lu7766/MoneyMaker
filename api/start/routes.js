@@ -17,3 +17,6 @@
 const Route = use('Route')
 
 Route.on('websocket').render('websocket')
+Route.get('/', ctx => {
+    return 'test'
+})
