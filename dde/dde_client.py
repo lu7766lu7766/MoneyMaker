@@ -95,7 +95,7 @@ while True:
 
 print("Connected to DDE server, start listening...")
 # 股票/期貨代號,名稱,時間,買進,賣出,成交,單量,總量,高點,低點,開盤
-dde.advise("FIMTXN*1.TF-preclose,Open,High,Low,TotalVolume", callback=fimtxnReciver)
+dde.advise("FITXN*1.TF-preclose,Open,High,Low,TotalVolume", callback=fimtxnReciver)
 PyWinDDE.WinMSGLoop()
 
 
