@@ -10,7 +10,8 @@
     </tr>
     </thead>
     <tbody>
-    <tr v-for="action in actions">
+    <tr v-for="(action, index) in actions">
+      <td>{{ index + 1 }}</td>
       <td>{{ moment(action.created_at).getDateTime() }}</td>
       <td>{{ action.type > 0 ? action.price : '' }}</td>
       <td>{{ action.type < 0 ? action.price : '' }}</td>
@@ -21,7 +22,7 @@
     <tfoot>
     <tr>
       <td>小計</td>
-      <td colspan="4">{{ totalMoney }}</td>
+      <td colspan="5">{{ totalMoney }}</td>
     </tr>
     </tfoot>
   </table>

@@ -8,7 +8,7 @@ class ActionService
     } else {
       await DB.table('actions').insert(data)
     }
-    return { source: data, result: await DB.table('actions').where('date', data.date) }
+    return { source: data, result: await DB.table('actions').where('date', data.date).orderBy('id', 'desc') }
   }
 
   async getDates()
