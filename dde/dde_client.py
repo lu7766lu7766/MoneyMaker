@@ -21,20 +21,17 @@ def wsConnect():
       wsConnect()
       
 oldValue = []
+oldTime = ''
 wsConnect()
 
 def fimtxnReciver(value, item):
-  global oldValue
+  global oldTime, oldValue
   # svalue = value.replace("[\D\;]", "")
-  aValue = value.split(";")[:4]
-  # aValue[0] = re.sub("\D", "", aValue[0])
-  # aValue[1] = re.sub("\D", "", aValue[1])
-  # aValue[2] = re.sub("\D", "", aValue[2])
-  # aValue[3] = re.sub("\D", "", aValue[3])
-  # sprint(aValue)
-  
-  if (np.array_equal(aValue, oldValue)):
-    return
+  # print(value)
+  # print(item)
+  # return 
+  newValue = value.split(",")[:5]
+  newTime = newValue[0]
 
   now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
   settleEndTime = datetime.now().strftime("%Y-%m-%d 13:45:00")
@@ -48,43 +45,57 @@ def fimtxnReciver(value, item):
     date = (datetime.today() - timedelta(days=1)).strftime("%Y-%m-%d")
   else:
     date = datetime.today().strftime("%Y-%m-%d")
+  
+  if (newTime != oldTime and oldTime != ''):
+    open = oldValue[1]
+    high = oldValue[2]
+    low = oldValue[3]
+    close = oldValue[4]
+    while True:
+      try:
+        ws.emit("bordcast", json.dumps({
+          "date": date,
+          "close": close,
+          "open": open,
+          "high": high,
+          "low": low,
+          "created_at": now
+        }))
+        break
+      except:
+        print("WS disconnect try again...")
+        time.sleep(3)
+        wsConnect()
+  # print(newValue)
+  
+  # if (np.array_equal(newValue, oldValue)):
+  #   return
+  oldValue = newValue
+  oldTime = newTime
+  
 
   # print(date)
-  close = aValue[0]
-  open = aValue[1]
-  high = aValue[2]
-  low = aValue[3]
-  # print(int(float(aValue[4])))
+  # open = newValue[1]
+  # high = newValue[2]
+  # low = newValue[3]
+  # close = newValue[4]
+  # print(int(float(newValue[4])))
   #out_string = "date: %s; price:%s; open:%s; high:%s; low:%s; volume:%s; - %s" % (
   #    date, price, open, high, low, volume, now)
   # datetime.datetime.now()
   #print(out_string)
-  while True:
-    try:
-      ws.emit("bordcast", json.dumps({
-        "date": date,
-        "close": close,
-        "open": open,
-        "high": high,
-        "low": low,
-        "created_at": now
-      }))
-      break
-    except:
-      print("WS disconnect try again...")
-      time.sleep(3)
-      wsConnect()
+  
       
       
 
-  oldValue = aValue
+  
   #f2.write(out_string + "\n")
 
 
 # main function
 while True:
   try:
-    dde = PyWinDDE.DDEClient("XQLITE", "Quote")
+    dde = PyWinDDE.DDEClient("XQLITE", "Kline")
     break
   except:
     e = sys.exc_info()[0]
@@ -95,8 +106,11 @@ while True:
 
 print("Connected to DDE server, start listening...")
 # 股票/期貨代號,名稱,時間,買進,賣出,成交,單量,總量,高點,低點,開盤
-dde.advise("FIMTXN*1.TF-preclose,Open,High,Low,TotalVolume", callback=fimtxnReciver)
+# dde.advise("FITXN*1.TF-preclose,Open,High,Low,TotalVolume", callback=fimtxnReciver)
+# -F001,F002,F003,F004
+dde.advise("FITXN*1.TF-1min-1", callback=fimtxnReciver)
 PyWinDDE.WinMSGLoop()
+
 
 
   
