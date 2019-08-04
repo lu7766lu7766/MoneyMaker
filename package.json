@@ -6,7 +6,8 @@
   "main": "index.js",
   "scripts": {
     "dev": "vue-cli-service serve",
-    "build": "vue-cli-service build"
+    "build": "vue-cli-service build",
+    "dde": "python dde/dde_client.py"
   },
   "author": "Jac",
   "license": "Apache-2.0",
