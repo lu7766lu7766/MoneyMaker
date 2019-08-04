@@ -2,6 +2,7 @@
   <table class="table" >
     <thead>
     <tr>
+      <td>#</td>
       <td>成交時間</td>
       <td>買進</td>
       <td>賣出</td>
