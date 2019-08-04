@@ -1,3 +1,5 @@
+const ActionModel = use('Models/Action')
+
 class ActionService
 {
   async doAction(data)
@@ -8,7 +10,13 @@ class ActionService
     } else {
       await DB.table('actions').insert(data)
     }
-    return { source: data, result: await DB.table('actions').where('date', data.date).orderBy('id', 'desc') }
+    return {
+      source: data,
+      result: await ActionModel.query()
+        .where('date', data.date)
+        .orderBy('id', 'desc')
+        .fetch()
+    }
   }
 
   async getDates()

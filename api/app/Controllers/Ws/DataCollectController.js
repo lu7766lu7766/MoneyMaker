@@ -20,6 +20,7 @@ class DataCollectController
         .fetch(),
       actions: await ActionModel.query()
         .where('date', date)
+        .orderBy('id', 'desc')
         .fetch()
     }, [this.socket.id])
   }
