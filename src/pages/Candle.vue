@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-form-select :value="date" :options="dateList" @change="onDateChange"></b-form-select>
+    <b-form-select :value="date" :options="dates" @change="onDateChange"></b-form-select>
     <ve-candle :data="chartData" :settings="chartSettings" :after-config="getChartConfig" :markPoint="markPoint"></ve-candle>
   </div>
 </template>
@@ -11,20 +11,20 @@
   export default {
     mixins: [IndexMixins],
     props: ['date'],
-    data: () =>
-    {
-      const initSubDay = moment().isBefore(moment().format('YYYY-MM-DD 15:00:00'))
-        ? 1
-        : 0
-      const dateList = []
-      _.range(0, 5).forEach(index =>
-      {
-        dateList.push(moment().subtract(index + initSubDay, 'days').getDate())
-      })
-      return {
-        dateList
-      }
-    },
+    // data: () =>
+    // {
+    //   const initSubDay = moment().isBefore(moment().format('YYYY-MM-DD 15:00:00'))
+    //     ? 1
+    //     : 0
+    //   const dateList = []
+    //   _.range(0, 5).forEach(index =>
+    //   {
+    //     dateList.push(moment().subtract(index + initSubDay, 'days').getDate())
+    //   })
+    //   return {
+    //     dateList
+    //   }
+    // },
     methods: {
       onDateChange(date)
       {
@@ -91,7 +91,7 @@
       this.$bus.on('ws.ready', () =>
       {
         console.log('ws.ready')
-        this.$emit('change', this.dateList[0])
+        this.$emit('change', this.dates[0])
       })
     },
     destroyed()

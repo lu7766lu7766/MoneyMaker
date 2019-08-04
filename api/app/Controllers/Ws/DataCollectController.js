@@ -2,6 +2,7 @@
 // const redisService = App.make('Service/Redis')
 const FimtxnModel = use('Models/Fimtxn')
 const ActionModel = use('Models/Action')
+const actionService = App.make('Service/Action')
 
 class DataCollectController
 {
@@ -32,8 +33,14 @@ class DataCollectController
 
   async onAction(data)
   {
-    await DB.table('actions').insert(data)
-    this.socket.emitTo('action', data, [this.socket.id])
+    // await DB.table('actions').insert(data)
+    this.socket.emitTo('action', await actionService.doAction(data), [this.socket.id])
+  }
+
+  async onGetDate()
+  {
+    const dates = _.orderBy(_.map(await DB.table('fimtxn').distinct('date'), x => moment(x.date).getDate()), null, 'desc')
+    this.socket.emitTo('getDate', dates, [this.socket.id])
   }
 
   async onClose(socket)

@@ -1,6 +1,7 @@
 'use strict'
 
 const Task = use('Task')
+const env = require('../../env')
 
 class DataClearn extends Task {
   static get schedule () {
@@ -9,7 +10,7 @@ class DataClearn extends Task {
 
   async handle () {
     // this.info('Task DataClearn handle')
-    DB.table('fimtxn').where('date', '<', moment().subtract(5, 'days').getDate()).delete()
+    DB.table('fimtxn').where('date', '<', moment().subtract(env.dataDays, 'days').getDate()).delete()
   }
 }
 

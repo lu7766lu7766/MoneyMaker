@@ -8,7 +8,8 @@ export default new Vuex.Store({
   state: {
     actions: [],
     todoActions: [],
-    datas: []
+    datas: [],
+    dates: []
   },
   mutations: {
     SET_ACTIONS(state, datas) {
@@ -19,6 +20,9 @@ export default new Vuex.Store({
     },
     SET_DATAS(state, datas) {
       state.datas = datas
+    },
+    SET_DATES(state, datas) {
+      state.dates = datas
     }
   },
   actions: {},

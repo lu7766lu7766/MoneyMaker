@@ -8,6 +8,9 @@ export default {
     },
     setDatas(datas) {
       this.$store.commit('SET_DATAS', datas)
+    },
+    setDates(dates) {
+      this.$store.commit('SET_DATES', dates)
     }
   },
   computed: {
@@ -19,6 +22,9 @@ export default {
     },
     todoActions() {
       return this.$store.state.todoActions
-    }
+    },
+    dates() {
+      return this.$store.state.dates
+    },
   }
 }

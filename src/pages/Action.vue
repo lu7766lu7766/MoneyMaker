@@ -1,45 +1,40 @@
 <template>
-  <div class="container">
-    <div class="row">
-      <div class="col-md-3">
-        <h4>控制區</h4>
-        <div class="form-group">
-          <div class="input-group">
-            <b-button-group>
-              <b-form-input v-model.number="price" placeholder="Enter your name"></b-form-input>
-              <b-button variant="danger" @click="addTodoAction(1)">買</b-button>
-              <b-button variant="primary" @click="addTodoAction(-1)">賣</b-button>
-            </b-button-group>
-          </div>
-        </div>
-        <div class="form-group">
-          <div class="input-group doing">
-            <b-button variant="danger" @click="addAction(1)">現買</b-button>
-            <b-button variant="primary" @click="addAction(-1)">現賣</b-button>
-          </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h4>控制區</h4>
+      <div class="form-group">
+        <div class="input-group">
+          <b-button-group>
+            <b-form-input v-model.number="price" placeholder="Enter your name"></b-form-input>
+            <b-button variant="danger" @click="addTodoAction(1)">買</b-button>
+            <b-button variant="primary" @click="addTodoAction(-1)">賣</b-button>
+          </b-button-group>
         </div>
       </div>
+      <div class="form-group">
+        <div class="input-group doing">
+          <b-button variant="danger" @click="addAction(1)">現買</b-button>
+          <b-button variant="primary" @click="addAction(-1)">現賣</b-button>
+        </div>
+      </div>
+    </div>
 
-      <div class="col-md-4">
-        <h4>預掛</h4>
-        <div class="todo-list">
-          <div class="todo"
-               v-for="(action, index) in todoActions"
-               :key="index"
-               :class="action.type > 0 ? 'buy': 'sell'">
-            <button type="button" class="close" @click="deleteTodoAction(index)">
-              <span aria-hidden="true">&times;</span>
-            </button>
-            {{ action.price }}
-          </div>
+    <div class="col-md-6">
+      <h4>預掛</h4>
+      <div class="todo-list">
+        <div class="todo"
+             v-for="(action, index) in todoActions"
+             :key="index"
+             :class="action.type > 0 ? 'buy': 'sell'">
+          <button type="button" class="close" @click="deleteTodoAction(index)">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          {{ action.price }}
         </div>
-      </div>
-      <div class="col-md-3">
-        <h4>小記</h4>
-        {{ totalMoney }}
       </div>
     </div>
   </div>
+
 </template>
 
 <script>
@@ -78,12 +73,6 @@
         {
           this.addTodoAction(type)
         }
-      }
-    },
-    computed: {
-      totalMoney()
-      {
-        return _.sumBy(this.actions, action => action.price * -action.type)
       }
     }
   }
