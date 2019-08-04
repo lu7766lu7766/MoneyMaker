@@ -35,7 +35,7 @@ class DataCollectController
   async onAction(data)
   {
     // await DB.table('actions').insert(data)
-    this.socket.emitTo('action', await actionService.doAction(data), [this.socket.id])
+    this.socket.broadcastToAll('action', await actionService.doAction(data))
   }
 
   async onGetDate()
