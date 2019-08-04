@@ -11,7 +11,7 @@
     </thead>
     <tbody>
     <tr v-for="action in actions">
-      <td>{{ action.created_at }}</td>
+      <td>{{ moment(action.created_at).getDateTime() }}</td>
       <td>{{ action.type > 0 ? action.price : '' }}</td>
       <td>{{ action.type < 0 ? action.price : '' }}</td>
       <td>{{ action.cover }}</td>
