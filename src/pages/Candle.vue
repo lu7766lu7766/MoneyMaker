@@ -77,7 +77,7 @@
       markPoint() {
         return {
           data: _.map(this.actions, action => ({
-            coord: [action.created_at, action.price],
+            coord: [moment(action.created_at).getDateTime(), action.price],
             value: action.price,
             itemStyle: {
               normal: {color: action.type > 0 ? 'rgb(255,0,0)' : 'rgb(41,60,85)'}
