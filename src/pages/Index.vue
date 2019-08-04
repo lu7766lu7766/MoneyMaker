@@ -10,13 +10,13 @@
       <candle :date="date" @change="onDateChange" />
       <div class="container-fluid">
         <div class="row">
-          <action class="col-md-6" v-if="$route.name === 'action' && date === firstDate" :date="date" />
           <sub-total class="col-md-6"></sub-total>
+          <action class="col-md-6" v-if="$route.name === 'action' && date === firstDate" :date="date" />
         </div>
       </div>
     </div>
-    <div class="layout-copy">
-      2011-2019 &copy; JacWang
+    <div class="layout-copy" style="text-align: center">
+      2019 &copy; JacWang
     </div>
   </div>
 </template>
@@ -94,6 +94,7 @@
         })
       },
       subscribeDate() {
+        // init get dates, when advice update dates
         this.$root.subscriber.on('getDate', dates => {
           if (!this.firstDate) {
             this.onDateChange(dates[0])
@@ -102,9 +103,6 @@
           this.setDates(dates)
         })
         this.$root.subscriber.emit('getDate')
-        setInterval(() => {
-          this.$root.subscriber.emit('getDate')
-        }, 10 * 1000)
       }
     },
     created()

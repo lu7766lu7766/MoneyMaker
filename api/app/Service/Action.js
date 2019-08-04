@@ -10,6 +10,11 @@ class ActionService
     }
     return { source: data, result: await DB.table('actions').where('date', data.date) }
   }
+
+  async getDates()
+  {
+    return _.orderBy(_.map(await DB.table('fimtxn').distinct('date'), 'date'), null, 'desc')
+  }
 }
 
 module.exports = ActionService

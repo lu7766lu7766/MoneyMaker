@@ -2,6 +2,7 @@
   <table class="table" >
     <thead>
     <tr>
+      <td>成交時間</td>
       <td>買進</td>
       <td>賣出</td>
       <td>平倉</td>
@@ -10,6 +11,7 @@
     </thead>
     <tbody>
     <tr v-for="action in actions">
+      <td>{{ action.created_at }}</td>
       <td>{{ action.type > 0 ? action.price : '' }}</td>
       <td>{{ action.type < 0 ? action.price : '' }}</td>
       <td>{{ action.cover }}</td>
@@ -19,7 +21,7 @@
     <tfoot>
     <tr>
       <td>小計</td>
-      <td colspan="3">{{ totalMoney }}</td>
+      <td colspan="4">{{ totalMoney }}</td>
     </tr>
     </tfoot>
   </table>

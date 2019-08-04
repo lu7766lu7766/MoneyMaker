@@ -28,6 +28,7 @@ class DataCollectController
   {
     data = JSON.parse(data)
     await DB.table('fimtxn').insert(data)
+    await this.socket.broadcast('getDate', await actionService.getDates())
     this.socket.broadcast('advice', data)
   }
 
@@ -39,8 +40,7 @@ class DataCollectController
 
   async onGetDate()
   {
-    const dates = _.orderBy(_.map(await DB.table('fimtxn').distinct('date'), x => moment(x.date).getDate()), null, 'desc')
-    this.socket.emitTo('getDate', dates, [this.socket.id])
+    this.socket.emitTo('getDate', await actionService.getDates(), [this.socket.id])
   }
 
   async onClose(socket)
