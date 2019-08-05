@@ -62,16 +62,20 @@
         switch (+day)
         {
           case 0:
+            // 1 08:45 ~ 13:45
             dataHours = 60 * 5
             break
           case 1:
           case 2:
           case 3:
           case 4:
+            // 15:00 ~ 05:00
+            // 08:45 ~ 13:45
             dataHours = 60 * (24 - 3.75 - 1.25)
             break
           case 5:
-            dataHours = 60 * (24 - 3.75 - 1.25 - 5)
+            // 5 15:00 ~ 05:00(6)
+            dataHours = 60 * 14
             break
           default:
             break
