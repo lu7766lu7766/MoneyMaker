@@ -7,6 +7,10 @@
     </b-navbar>
 
     <div class="layout-content">
+      <div>
+        目前時間： {{ time }} &nbsp;&nbsp;
+        資料時間：{{ lastTime }}
+      </div>
       <candle :date="date" @change="onDateChange" />
       <div class="container-fluid">
         <div class="row">
@@ -42,7 +46,9 @@
         host: Hosts[env.target],
         channel: 'DataCollect',
         date: '',
-        firstDate: null
+        firstDate: null,
+        time: moment().getDateTime(),
+        timer: null
       }
     },
     methods: {
@@ -103,6 +109,21 @@
           this.setDates(dates)
         })
         this.$root.subscriber.emit('getDate')
+      },
+      counter()
+      {
+        this.timer = setInterval(() =>
+        {
+          this.time = moment().getDateTime()
+        }, 1000)
+      }
+    },
+    computed: {
+      lastTime()
+      {
+        return _.last(this.datas)
+          ? moment(_.last(this.datas).created_at).getDateTime()
+          : ''
       }
     },
     created()
@@ -116,6 +137,7 @@
         this.subscribeAction()
         this.subscribeDate()
         // this.$bus.emit('ws.ready')
+        this.counter()
       })
     }
   }
