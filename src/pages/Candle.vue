@@ -76,7 +76,6 @@
           default:
             break
         }
-        console.log(day, typeof day, dataHours, this.datas.length)
         return dataHours - this.datas.length
       },
       chartData()
