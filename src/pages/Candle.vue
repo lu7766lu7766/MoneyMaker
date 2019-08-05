@@ -53,14 +53,38 @@
       }
     },
     computed: {
-      chartData()
+      fillLength()
       {
         // 60 * (24 - 3.75 - 1.25) 一天正常資料量
-        const fillLength = 60 * (24 - 3.75 - 1.25) - this.datas.length
-        let fillDatas = _.cloneDeep(this.datas)
-        if (fillLength > 0)
+        // const fillLength = 60 * (24 - 3.75 - 1.25) - this.datas.length
+        const day = moment(this.date).format('e')
+        let dataHours
+        switch (+day)
         {
-          fillDatas = _.concat(this.datas, _.fill(Array(fillLength), {created_at: ''}))
+          case 0:
+            dataHours = 60 * 5
+            break
+          case 1:
+          case 2:
+          case 3:
+          case 4:
+            dataHours = 60 * (24 - 3.75 - 1.25)
+            break
+          case 5:
+            dataHours = 60 * (24 - 3.75 - 1.25 - 5)
+            break
+          default:
+            break
+        }
+        console.log(day, typeof day, dataHours, this.datas.length)
+        return dataHours - this.datas.length
+      },
+      chartData()
+      {
+        let fillDatas = _.cloneDeep(this.datas)
+        if (this.fillLength > 0)
+        {
+          fillDatas = _.concat(this.datas, _.fill(Array(this.fillLength), {created_at: ''}))
         }
         // 小型台指近月
         return {
