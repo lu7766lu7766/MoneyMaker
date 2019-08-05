@@ -55,8 +55,8 @@
     computed: {
       chartData()
       {
-        // 60 * (24 - 4.25) 一天正常資料量
-        const fillLength = 60 * (24 - 4.25) - this.datas.length
+        // 60 * (24 - 3.75 - 1.25) 一天正常資料量
+        const fillLength = 60 * (24 - 3.75 - 1.25) - this.datas.length
         let fillDatas = _.cloneDeep(this.datas)
         if (fillLength > 0)
         {
