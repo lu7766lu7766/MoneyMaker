@@ -7,6 +7,7 @@ class ActionSchema extends Schema {
   up () {
     this.dropTableIfExists('actions')
     this.create('actions', (table) => {
+      table.increments()
       table.string('date', 10).comment('開盤日期').notNullable().index()
       table.integer('type', 1).comment('1:buy, -1:sell').notNullable()
       table.integer('price', 10).comment('price').notNullable()

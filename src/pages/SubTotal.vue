@@ -12,7 +12,7 @@
     </thead>
     <tbody>
     <tr v-for="(action, index) in actions">
-      <td>{{ index + 1 }}</td>
+      <td>{{ actions.length - index }}</td>
       <td>{{ moment(action.created_at).getDateTime() }}</td>
       <td>{{ action.type > 0 ? action.price : '' }}</td>
       <td>{{ action.type < 0 ? action.price : '' }}</td>

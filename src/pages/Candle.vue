@@ -55,10 +55,17 @@
     computed: {
       chartData()
       {
+        // 60 * (24-3.5) 一天正常資料量
+        const fillLength = 60 * (24 - 3.5) - this.datas.length
+        let fillDatas = _.cloneDeep(this.datas)
+        if (fillLength > 0)
+        {
+          fillDatas = _.concat(this.datas, _.fill(Array(fillLength), {created_at: ''}))
+        }
         // 小型台指近月
         return {
           columns: ['time', 'open', 'close', 'lowest', 'highest'],
-          rows: _.map(this.datas, data => ({
+          rows: _.map(fillDatas, data => ({
             'time': data.created_at,
             'open': data.open,
             'close': data.close,
