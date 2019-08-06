@@ -14,8 +14,8 @@
       <candle :date="date" @change="onDateChange" />
       <div class="container-fluid">
         <div class="row">
-          <sub-total class="col-md-6"></sub-total>
-          <action class="col-md-6" v-if="$route.name === 'action' && date === firstDate" :date="date" />
+          <sub-total class="col-md-7"></sub-total>
+          <action class="col-md-5" v-if="$route.name === 'action'" :firstDate="firstDate" />
         </div>
       </div>
     </div>
@@ -113,24 +113,29 @@
         // when action submit success
         this.$root.subscriber.on('action', data =>
         {
-          (new Audio(data.source.type > 0
+          (new Audio(data.type > 0
             ? BuySound
             : SellSound)).play()
-          if (data.source.date === this.date)
-          {
-            this.setActions(data.result)
-          }
+          this.$root.subscriber.emit('getActions', this.date)
+        })
+        // get new action list
+        this.$root.subscriber.on('getActions', datas =>
+        {
+          this.setActions(datas)
         })
       },
       subscribeDate() {
         // init get dates, when advice update dates
         this.$root.subscriber.on('getDate', dates => {
+          const firstDate = _.first(dates)
+
           if (!this.firstDate) {
-            this.onDateChange(dates[0])
+            this.onDateChange(firstDate)
           }
-          this.firstDate = _.first(dates)
+          this.firstDate = firstDate
           this.setDates(dates)
         })
+        // init dates first at start
         this.$root.subscriber.emit('getDate')
       },
       counter()
