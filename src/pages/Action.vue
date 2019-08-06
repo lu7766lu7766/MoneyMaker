@@ -19,7 +19,7 @@
       </div>
     </div>
 
-    <div class="col-md-6">
+    <div class="col-md-5">
       <h4>預掛</h4>
       <div class="todo-list">
         <div class="todo"
@@ -40,7 +40,7 @@
 <script>
   import IndexMixins from 'mixins/index'
   export default {
-    props: ['date'],
+    props: ['firstDate'],
     mixins: [IndexMixins],
     data: () => ({
       price: 10000
@@ -63,7 +63,7 @@
         if (lastData)
         {
           this.$root.subscriber.emit('action', {
-            date: this.date,
+            date: this.firstDate,
             price: lastData.close,
             type,
             created_at: lastData.created_at

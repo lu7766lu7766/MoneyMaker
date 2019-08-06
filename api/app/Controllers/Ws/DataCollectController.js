@@ -1,8 +1,7 @@
 'use strict'
 // const redisService = App.make('Service/Redis')
-const FimtxnModel = use('Models/Fimtxn')
-const ActionModel = use('Models/Action')
-const actionService = App.make('Service/Action')
+
+const dataService = App.make('Service/Data')
 
 class DataCollectController
 {
@@ -15,33 +14,33 @@ class DataCollectController
   async onInit(date)
   {
     this.socket.emitTo('init', {
-      datas: await FimtxnModel.query()
-        .where('date', date)
-        .fetch(),
-      actions: await ActionModel.query()
-        .where('date', date)
-        .orderBy('id', 'desc')
-        .fetch()
+      datas: await dataService.getDatas(date),
+      actions: await dataService.getActions(date)
     }, [this.socket.id])
+  }
+
+  async onGetActions(date)
+  {
+    this.socket.emitTo('getActions', await dataService.getActions(date), [this.socket.id])
   }
 
   async onBordcast(data)
   {
     data = JSON.parse(data)
     await DB.table('fimtxn').insert(data)
-    await this.socket.broadcast('getDate', await actionService.getDates())
+    await this.socket.broadcast('getDate', await dataService.getDates())
     this.socket.broadcast('advice', data)
   }
 
-  async onAction(data)
+  async onAction(data, date)
   {
     // await DB.table('actions').insert(data)
-    this.socket.broadcastToAll('action', await actionService.doAction(data))
+    this.socket.broadcastToAll('action', await dataService.doAction(data, date))
   }
 
   async onGetDate()
   {
-    this.socket.emitTo('getDate', await actionService.getDates(), [this.socket.id])
+    this.socket.emitTo('getDate', await dataService.getDates(), [this.socket.id])
   }
 
   async onClose(socket)
