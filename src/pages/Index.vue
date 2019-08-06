@@ -60,6 +60,7 @@
       wsInit() {
         this.ws = adonis.Ws(this.host).connect()
         this.ws.on('close', () => {
+          console.log('close')
           setTimeout(() => {
             this.wsInit()
           }, 50)
@@ -87,8 +88,10 @@
       },
       subscribeAdvice() {
         // when service has new data
+        console.log('subscribe advice')
         this.$root.subscriber.on('advice', data =>
         {
+          console.log('advice')
           if (data.date === this.date)
           {
             this.setDatas(_.concat(this.datas, data))

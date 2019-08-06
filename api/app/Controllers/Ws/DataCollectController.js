@@ -28,6 +28,7 @@ class DataCollectController
   async onBordcast(data)
   {
     data = JSON.parse(data)
+    console.log(data)
     await DB.table('fimtxn').insert(data)
     await this.socket.broadcast('getDate', await actionService.getDates())
     this.socket.broadcast('advice', data)

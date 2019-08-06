@@ -1,7 +1,7 @@
 'use strict'
 
 const Task = use('Task')
-const env = require('../../env')
+const env = require('../../../env')
 
 class DataClearn extends Task {
   static get schedule () {
