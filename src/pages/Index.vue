@@ -57,6 +57,26 @@
         this.date = date
         this.$root.subscriber.emit('init', date)
       },
+      wsInit() {
+        this.ws = adonis.Ws(this.host).connect()
+        this.ws.on('close', () => {
+          setTimeout(() => {
+            this.wsInit()
+          }, 50)
+        })
+        return new Promise(resolve => {
+          this.ws.on('open', () =>
+          {
+            this.$root.subscriber = this.ws.subscribe(this.channel)
+            this.subscribeInit()
+            this.subscribeAdvice()
+            this.subscribeAction()
+            this.subscribeDate()
+            // this.$bus.emit('ws.ready')
+            resolve(1)
+          })
+        })
+      },
       subscribeInit() {
         // when date changed or get datas and actions
         this.$root.subscriber.on('init', res =>
@@ -131,19 +151,10 @@
           : ''
       }
     },
-    created()
+    async created()
     {
-      this.ws = adonis.Ws(this.host).connect()
-      this.ws.on('open', () =>
-      {
-        this.$root.subscriber = this.ws.subscribe(this.channel)
-        this.subscribeInit()
-        this.subscribeAdvice()
-        this.subscribeAction()
-        this.subscribeDate()
-        // this.$bus.emit('ws.ready')
-        this.counter()
-      })
+      await this.wsInit()
+      this.counter()
     }
   }
 </script>
