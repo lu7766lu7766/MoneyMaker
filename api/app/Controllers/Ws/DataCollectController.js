@@ -24,11 +24,16 @@ class DataCollectController
     this.socket.emitTo('getActions', await dataService.getActions(date), [this.socket.id])
   }
 
+  async onGetDatas(date)
+  {
+    this.socket.emitTo('getActions', await dataService.getDatas(date), [this.socket.id])
+  }
+
   async onBordcast(data)
   {
     data = JSON.parse(data)
     console.log(data)
-    await DB.table('fimtxn').insert(data)
+    await dataService.doAdvice(data)
     await this.socket.broadcast('getDate', await dataService.getDates())
     this.socket.broadcast('advice', data)
   }

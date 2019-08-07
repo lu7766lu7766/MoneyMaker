@@ -21,19 +21,26 @@ def wsConnect():
       wsConnect()
       
 oldValue = []
-oldTime = ''
 wsConnect()
 
 def fimtxnReciver(value, item):
-  global oldTime, oldValue
+  global oldValue
   # svalue = value.replace("[\D\;]", "")
   # print(value)
   # print(item)
   # return 
   newValue = value.split(",")[:5]
-  newTime = newValue[0]
 
-  now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+  # now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+  if (np.array_equal(newValue, oldValue)):
+    return
+
+  now = newValue[0]
+  open = newValue[1]
+  high = newValue[2]
+  low = newValue[3]
+  close = newValue[4]
+
   settleEndTime = datetime.now().strftime("%Y-%m-%d 13:45:00")
   settleStartTime = datetime.now().strftime("%Y-%m-%d 15:00:00")
 
@@ -46,32 +53,26 @@ def fimtxnReciver(value, item):
   else:
     date = datetime.today().strftime("%Y-%m-%d")
   
-  if (newTime != oldTime and oldTime != ''):
-    open = oldValue[1]
-    high = oldValue[2]
-    low = oldValue[3]
-    close = oldValue[4]
-    while True:
-      try:
-        ws.emit("bordcast", json.dumps({
-          "date": date,
-          "close": close,
-          "open": open,
-          "high": high,
-          "low": low,
-          "created_at": now
-        }))
-        break
-      except:
-        print("WS disconnect try again...")
-        time.sleep(3)
-        wsConnect()
+  while True:
+    try:
+      ws.emit("bordcast", json.dumps({
+        "date": date,
+        "close": close,
+        "open": open,
+        "high": high,
+        "low": low,
+        "created_at": now
+      }))
+      break
+    except:
+      print("WS disconnect try again...")
+      time.sleep(3)
+      wsConnect()
   # print(newValue)
   
   # if (np.array_equal(newValue, oldValue)):
   #   return
   oldValue = newValue
-  oldTime = newTime
   
 
   # print(date)
