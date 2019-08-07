@@ -60,9 +60,13 @@
       wsInit() {
         this.ws = adonis.Ws(this.host).connect()
         this.ws.on('close', () => {
-          setTimeout(() => {
-            this.wsInit()
-          }, 50)
+          this.ws = null
+          this.wsReconnect()
+        })
+        this.ws.on('error', () =>
+        {
+          this.ws = null
+          this.wsReconnect()
         })
         return new Promise(resolve => {
           this.ws.on('open', () =>
@@ -71,11 +75,22 @@
             this.subscribeInit()
             this.subscribeAdvice()
             this.subscribeAction()
+            this.subscribeDatas()
             this.subscribeDate()
             // this.$bus.emit('ws.ready')
             resolve(1)
           })
         })
+      },
+      wsReconnect()
+      {
+        if (!this.ws)
+        {
+          setTimeout(() =>
+          {
+            this.wsInit()
+          }, 1000)
+        }
       },
       subscribeInit() {
         // when date changed or get datas and actions
@@ -91,7 +106,8 @@
         {
           if (data.date === this.date)
           {
-            this.setDatas(_.concat(this.datas, data))
+            // this.setDatas(_.concat(this.datas, data))
+            this.$root.subscriber.emit('getDatas', this.date)
           }
           // always checking todoActions
           this.setTodoActions(_.filter(this.todoActions, action => {
@@ -104,6 +120,13 @@
             }
             return true
           }))
+        })
+      },
+      subscribeDatas()
+      {
+        this.$root.subscriber.on('getDatas', datas =>
+        {
+          this.setDatas(datas)
         })
       },
       subscribeAction() {
