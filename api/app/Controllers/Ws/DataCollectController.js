@@ -26,7 +26,7 @@ class DataCollectController
 
   async onGetDatas(date)
   {
-    this.socket.emitTo('getActions', await dataService.getDatas(date), [this.socket.id])
+    this.socket.emitTo('getDatas', await dataService.getDatas(date), [this.socket.id])
   }
 
   async onBordcast(data)
