@@ -35,7 +35,8 @@ def fimtxnReciver(value, item):
   if (np.array_equal(newValue, oldValue)):
     return
 
-  now = newValue[0]
+  # now = newValue[0]
+  now = (datetime.strptime(newValue[0], "%Y/%m/%d  %H:%M:%S") - timedelta(days=1)).strftime("%Y-%m-%d %H:%M:%S")
   open = newValue[1]
   high = newValue[2]
   low = newValue[3]
