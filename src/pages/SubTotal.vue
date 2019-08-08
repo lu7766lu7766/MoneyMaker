@@ -28,8 +28,13 @@
     </tbody>
     <tfoot>
     <tr>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
       <td>小計</td>
-      <td colspan="5">{{ totalMoney }}</td>
+      <td>{{ totalMoney }}</td>
     </tr>
     </tfoot>
   </table>
