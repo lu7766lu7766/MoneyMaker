@@ -38,21 +38,15 @@
     mixins: [IndexMixins],
     computed: {
       totalMoney() {
-        let sum = 0
-        _.forEach(this.actions, action => {
-          if (action.type > 0) {
-            sum -= action.price
-            if (action.cover) {
-              sum += action.cover
-            }
+        return _.reduce(this.actions, (sum, action) =>
+        {
+          if (action.cover)
+          {
+            return sum + (action.type * (action.cover - action.price))
           } else {
-            sum += action.price
-            if (action.cover) {
-              sum -= action.cover
-            }
+            return sum
           }
-        })
-        return sum
+        }, 0)
       }
     }
   }
