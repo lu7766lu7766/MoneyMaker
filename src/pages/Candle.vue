@@ -1,7 +1,11 @@
 <template>
   <div>
     <b-form-select :value="date" :options="dates" @change="onDateChange"></b-form-select>
-    <ve-candle :data="chartData" :settings="chartSettings" :after-config="getChartConfig" :markPoint="markPoint"></ve-candle>
+    <ve-candle :data="chartData"
+               :not-set-unchange="['dataZoom']"
+               :settings="chartSettings"
+               :after-config="getChartConfig"
+               :markPoint="markPoint"></ve-candle>
   </div>
 </template>
 
@@ -145,18 +149,6 @@
           data
         }
       }
-    },
-    mounted()
-    {
-      this.$bus.on('ws.ready', () =>
-      {
-        console.log('ws.ready')
-        this.$emit('change', this.dates[0])
-      })
-    },
-    destroyed()
-    {
-      this.$bus.off('ws.ready')
     }
   }
 </script>
