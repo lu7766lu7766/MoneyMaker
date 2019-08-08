@@ -19,7 +19,11 @@
       <td>{{ action.type < 0 ? action.price : '' }}</td>
       <td>{{ action.updated_at }}</td>
       <td>{{ action.cover }}</td>
-      <td>{{ action.cover ? action.type > 0 ? (action.cover - action.price) : (action.price - action.cover) : '' }}</td>
+      <td>
+        <span v-if="action.cover">
+          {{ action.type > 0 ?  (action.cover - action.price) : (action.price - action.cover) }}
+        </span>
+      </td>
     </tr>
     </tbody>
     <tfoot>
