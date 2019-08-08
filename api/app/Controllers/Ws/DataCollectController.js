@@ -13,52 +13,41 @@ class DataCollectController
 
   async onInit(date)
   {
-    this.socket.emitTo('init', {
-      datas: await dataService.getDatas(date),
-      actions: await dataService.getActions(date)
-    }, [this.socket.id])
-  }
-
-  async onGetActions(date)
-  {
-    this.socket.emitTo('getActions', await dataService.getActions(date), [this.socket.id])
-  }
-
-  async onGetDatas(date)
-  {
     this.socket.emitTo('getDatas', await dataService.getDatas(date), [this.socket.id])
+    this.socket.emitTo('getActions', await dataService.getActions(date), [this.socket.id])
   }
 
   async onBordcast(data)
   {
     data = JSON.parse(data)
-    console.log(data)
+    // console.log(data)
     await dataService.doAdvice(data)
-    await this.socket.broadcast('getDate', await dataService.getDates())
+    this.socket.broadcast('getDateList', await dataService.getDateList())
     this.socket.broadcast('advice', data)
+    this.socket.broadcast('getDatas', await dataService.getDatas(data.date))
   }
 
-  async onAction(data, date)
+  async onAction(data)
   {
-    // await DB.table('actions').insert(data)
-    this.socket.broadcastToAll('action', await dataService.doAction(data, date))
+    // this.socket.broadcastToAll('action', await dataService.doAction(data, date))
+    await dataService.doAction(data)
+    this.socket.broadcastToAll('action', data)
+    this.socket.broadcastToAll('getActions', await dataService.getActions(data.date))
   }
 
-  async onGetDate()
+  async onGetDateList()
   {
-    this.socket.emitTo('getDate', await dataService.getDates(), [this.socket.id])
+    this.socket.emitTo('getDateList', await dataService.getDateList(), [this.socket.id])
   }
 
   async onClose(socket)
   {
-    // await this.clearData('DataCollect', this.auth.user.user_name)
-    // same as: socket.on('close')
-    // await this.clearData('OptionTodayItemCollect', this.auth.user.user_name)
+
   }
 
-  onError({socket})
+  async onError({socket})
   {
-    // same as: socket.on('error')
+
   }
 }
 

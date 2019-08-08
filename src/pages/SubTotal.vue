@@ -6,6 +6,7 @@
       <td>成交時間</td>
       <td>買進</td>
       <td>賣出</td>
+      <td>平倉時間</td>
       <td>平倉</td>
       <td>賺賠</td>
     </tr>
@@ -16,6 +17,7 @@
       <td>{{ moment(action.created_at).getDateTime() }}</td>
       <td>{{ action.type > 0 ? action.price : '' }}</td>
       <td>{{ action.type < 0 ? action.price : '' }}</td>
+      <td>{{ action.updated_at }}</td>
       <td>{{ action.cover }}</td>
       <td>{{ action.cover ? action.type > 0 ? (action.cover - action.price) : (action.price - action.cover) : '' }}</td>
     </tr>

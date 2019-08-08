@@ -59,12 +59,15 @@
       },
       wsInit() {
         this.ws = adonis.Ws(this.host).connect()
-        this.ws.on('close', () => {
+        this.ws.on('close', e =>
+        {
+          console.error('close: ', e)
           this.ws = null
           this.wsReconnect()
         })
-        this.ws.on('error', () =>
+        this.ws.on('error', e =>
         {
+          console.error('error: ', e)
           this.ws = null
           this.wsReconnect()
         })
@@ -72,12 +75,14 @@
           this.ws.on('open', () =>
           {
             this.$root.subscriber = this.ws.subscribe(this.channel)
-            this.subscribeInit()
-            this.subscribeAdvice()
-            this.subscribeAction()
-            this.subscribeDatas()
-            this.subscribeDate()
-            // this.$bus.emit('ws.ready')
+            // this.subscribeInit()
+            this.onAdvice()
+            this.onAction()
+            this.onGetActions()
+            this.onGetDatas()
+            this.onGetDateList()
+            // init dates first at start
+            this.$root.subscriber.emit('getDateList')
             resolve(1)
           })
         })
@@ -86,31 +91,19 @@
       {
         if (!this.ws)
         {
-          setTimeout(() =>
+          setTimeout(async () =>
           {
-            this.wsInit()
+            await this.wsInit()
+            this.wsReconnect()
           }, 1000)
         }
       },
-      subscribeInit() {
-        // when date changed or get datas and actions
-        this.$root.subscriber.on('init', res =>
-        {
-          this.setActions(res.actions)
-          this.setDatas(res.datas)
-        })
-      },
-      subscribeAdvice() {
+      onAdvice()
+      {
         // when service has new data
-        console.log('subscribe advice')
         this.$root.subscriber.on('advice', data =>
         {
           console.log('advice')
-          if (data.date === this.date)
-          {
-            // this.setDatas(_.concat(this.datas, data))
-            this.$root.subscriber.emit('getDatas', this.date)
-          }
           // always checking todoActions
           this.setTodoActions(_.filter(this.todoActions, action => {
             if (action.price < data.high && action.price > data.low) {
@@ -124,31 +117,45 @@
           }))
         })
       },
-      subscribeDatas()
+      onAction()
       {
-        this.$root.subscriber.on('getDatas', datas =>
-        {
-          this.setDatas(datas)
-        })
-      },
-      subscribeAction() {
-        // when action submit success
+        // when action write success
         this.$root.subscriber.on('action', data =>
         {
           (new Audio(data.type > 0
             ? BuySound
             : SellSound)).play()
-          this.$root.subscriber.emit('getActions', this.date)
         })
+      },
+      // setting
+      onGetActions()
+      {
         // get new action list
         this.$root.subscriber.on('getActions', datas =>
         {
-          this.setActions(datas)
+          const firstData = _.first(datas)
+          if (firstData && firstData.date === this.date)
+          {
+            this.setActions(datas)
+          }
         })
       },
-      subscribeDate() {
+      onGetDatas()
+      {
+        this.$root.subscriber.on('getDatas', datas =>
+        {
+          const firstData = _.first(datas)
+          if (firstData && firstData.date === this.date)
+          {
+            this.setDatas(datas)
+          }
+        })
+      },
+      onGetDateList()
+      {
         // init get dates, when advice update dates
-        this.$root.subscriber.on('getDate', dates => {
+        this.$root.subscriber.on('getDateList', dates =>
+        {
           const firstDate = _.first(dates)
 
           if (!this.firstDate) {
@@ -157,8 +164,6 @@
           this.firstDate = firstDate
           this.setDates(dates)
         })
-        // init dates first at start
-        this.$root.subscriber.emit('getDate')
       },
       counter()
       {

@@ -38,15 +38,18 @@ class DataService
       .limit(1))
 
     if (res) {
-      await DB.table('actions').update('cover', data.price).where('id', res.id)
+      // 平倉
+      await DB.table('actions').update({
+        'cover': data.price,
+        'updated_at': data.created_at
+      }).where('id', res.id)
     } else {
+      // 下單
       await DB.table('actions').insert(data)
     }
-
-    return data
   }
 
-  async getDates()
+  async getDateList()
   {
     return _.orderBy(_.map(await DB.table('fimtxn').distinct('date'), 'date'), null, 'desc')
   }
