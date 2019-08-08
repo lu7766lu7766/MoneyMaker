@@ -109,14 +109,40 @@
         }
       },
       markPoint() {
-        return {
-          data: _.map(this.actions, action => ({
-            coord: [moment(action.created_at).getDateTime(), action.price],
-            value: action.price,
-            itemStyle: {
-              normal: {color: action.type > 0 ? 'rgb(255,0,0)' : 'rgb(41,60,85)'}
+        // price
+        let data = _.map(this.actions, action => ({
+          coord: [moment(action.created_at).getDateTime(), action.price],
+          value: action.price,
+          itemStyle: {
+            normal: {
+              color: action.type > 0
+                ? 'rgb(255,0,0)'
+                : 'rgb(41,60,85)'
             }
-          }))
+          }
+        }))
+        // cover
+        data = _.concat(data, _.filter(_.map(this.actions, action =>
+        {
+          if (action.cover)
+          {
+            return {
+              coord: [moment(action.updated_at).getDateTime(), action.cover],
+              value: action.cover,
+              itemStyle: {
+                normal: {
+                  color: 'rgb(128,42,42)'
+                }
+              }
+            }
+          }
+          else
+          {
+            return ''
+          }
+        })), data => data !== '')
+        return {
+          data
         }
       }
     },
