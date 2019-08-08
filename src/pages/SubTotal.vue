@@ -21,7 +21,7 @@
       <td>{{ action.cover }}</td>
       <td>
         <span v-if="action.cover">
-          {{ action.type > 0 ?  (action.cover - action.price) : (action.price - action.cover) }}
+          {{ action.type > 0 ? (action.price - action.cover) : (action.cover - action.price) }}
         </span>
       </td>
     </tr>
