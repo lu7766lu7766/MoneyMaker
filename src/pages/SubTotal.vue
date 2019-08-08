@@ -42,7 +42,7 @@
         {
           if (action.cover)
           {
-            return sum + (action.type * (action.cover - action.price))
+            return sum + (action.type * (action.price - action.cover))
           } else {
             return sum
           }
