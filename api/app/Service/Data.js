@@ -20,12 +20,21 @@ class DataService
 
   async doAdvice(data)
   {
-    data.created_at = moment(data.created_at).getDateTime()
-    const res = _.first(await DB.table('fimtxn').where('created_at', data.created_at).count('* as count')) 
-    if (res.count > 0) {
-      await DB.table('fimtxn').update(data).where('created_at', data.created_at)
-    } else {
-      await DB.table('fimtxn').insert(data)
+    try
+    {
+      data.created_at = moment(data.created_at).getDateTime()
+      const res = _.first(await DB.table('fimtxn').where('created_at', data.created_at).count('* as count'))
+      if (res.count > 0)
+      {
+        await DB.table('fimtxn').update(data).where('created_at', data.created_at)
+      }
+      else
+      {
+        await DB.table('fimtxn').insert(data)
+      }
+    } catch (e)
+    {
+      console.log('error', e)
     }
   }
 
