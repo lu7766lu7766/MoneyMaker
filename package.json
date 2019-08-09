@@ -19,6 +19,7 @@
     "bootstrap-vue": "^2.0.0-rc.20",
     "echarts": "^4.2.1",
     "echarts-amap": "^1.4.15-rc.1",
+    "howler": "^2.1.2",
     "lodash": "^4.17.14",
     "moment": "^2.24.0",
     "stylus": "^0.54.5",

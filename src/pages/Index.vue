@@ -32,6 +32,7 @@
   import CoverSound from 'src/assets/cover.mp3'
   import Hosts from 'config/Hosts'
   import env from 'src/../env'
+  import { Howl } from 'howler'
 
   export default {
     mixins: [IndexMixins],
@@ -49,7 +50,16 @@
         date: '',
         firstDate: null,
         time: moment().getDateTime(),
-        timer: null
+        timer: null,
+        buySound: new Howl({
+          src: [BuySound]
+        }),
+        sellSound: new Howl({
+          src: [SellSound]
+        }),
+        coverSound: new Howl({
+          src: [CoverSound]
+        })
       }
     },
     methods: {
@@ -123,11 +133,12 @@
         // when action write success
         this.$root.subscriber.on('action', data =>
         {
-          (new Audio(!data.isCover
+          const sound = (!data.isCover
             ? data.type > 0
-              ? BuySound
-              : SellSound
-            : CoverSound)).play()
+              ? this.buySound
+              : this.sellSound
+            : this.coverSound)
+          sound.play()
         })
       },
       // setting
