@@ -32,7 +32,7 @@ class DataCollectController
     // this.socket.broadcastToAll('action', await dataService.doAction(data, date))
     try
     {
-      await dataService.doAction(data)
+      data.isCover = await dataService.doAction(data)
       this.socket.broadcastToAll('action', data)
       this.socket.broadcastToAll('getActions', await dataService.getActions(data.date))
     } catch (e)

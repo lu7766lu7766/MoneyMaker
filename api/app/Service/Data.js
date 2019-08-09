@@ -45,6 +45,7 @@ class DataService
       .where('type', -data.type)
       .whereNull('cover')
       .limit(1))
+    // lock time
     if (moment().format('YYYY-MM-DD HH:mm:00') === data.created_at)
     {
       if (res)
@@ -54,15 +55,16 @@ class DataService
           'cover': data.price,
           'updated_at': data.created_at
         }).where('id', res.id)
+        return true
       }
       else
       {
         // 下單
         await DB.table('actions').insert(data)
+        return false
       }
-      return true
     }
-    throw 'not on transfer time'
+    throw 'not in transfer time'
   }
 
   async getDateList()

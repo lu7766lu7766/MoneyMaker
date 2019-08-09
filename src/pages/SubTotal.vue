@@ -21,7 +21,7 @@
       <td>{{ action.cover }}</td>
       <td>
         <span v-if="action.cover">
-          {{ action.type > 0 ? (action.price - action.cover) : (action.cover - action.price) }}
+          {{ countWin(action) }}
         </span>
       </td>
     </tr>
@@ -45,13 +45,19 @@
 
   export default {
     mixins: [IndexMixins],
+    methods: {
+      countWin(action)
+      {
+        return action.type * (action.cover - action.price)
+      }
+    },
     computed: {
       totalMoney() {
         return _.reduce(this.actions, (sum, action) =>
         {
           if (action.cover)
           {
-            return sum + (action.type * (action.price - action.cover))
+            return sum + this.countWin(action)
           } else {
             return sum
           }

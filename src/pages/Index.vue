@@ -29,6 +29,7 @@
   import IndexMixins from 'mixins/index'
   import BuySound from 'src/assets/buy.mp3'
   import SellSound from 'src/assets/sell.mp3'
+  import CoverSound from 'src/assets/cover.mp3'
   import Hosts from 'config/Hosts'
   import env from 'src/../env'
 
@@ -122,9 +123,11 @@
         // when action write success
         this.$root.subscriber.on('action', data =>
         {
-          (new Audio(data.type > 0
-            ? BuySound
-            : SellSound)).play()
+          (new Audio(!data.isCover
+            ? data.type > 0
+              ? BuySound
+              : SellSound
+            : CoverSound)).play()
         })
       },
       // setting
