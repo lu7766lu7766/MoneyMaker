@@ -41,21 +41,28 @@ class DataService
   async doAction(data)
   {
     const res = _.first(await DB.table('actions')
-      .select('id', 'date')
+      .select('id', 'created_at')
       .where('type', -data.type)
       .whereNull('cover')
       .limit(1))
-
-    if (res) {
-      // 平倉
-      await DB.table('actions').update({
-        'cover': data.price,
-        'updated_at': data.created_at
-      }).where('id', res.id)
-    } else {
-      // 下單
-      await DB.table('actions').insert(data)
+    if (moment().format('YYYY-MM-DD HH:mm:00') === data.created_at)
+    {
+      if (res)
+      {
+        // 平倉
+        await DB.table('actions').update({
+          'cover': data.price,
+          'updated_at': data.created_at
+        }).where('id', res.id)
+      }
+      else
+      {
+        // 下單
+        await DB.table('actions').insert(data)
+      }
+      return true
     }
+    throw 'not on transfer time'
   }
 
   async getDateList()
