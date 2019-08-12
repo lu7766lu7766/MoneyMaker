@@ -11,11 +11,15 @@
         目前時間： {{ time }} &nbsp;&nbsp;
         資料時間：{{ lastTime }}
       </div>
-      <candle :date="date" @change="onDateChange" />
       <div class="container-fluid">
         <div class="row">
-          <sub-total class="col-md-7"></sub-total>
-          <action class="col-md-5" v-if="$route.name === 'action'" :firstDate="firstDate" />
+          <div class="col-md-8">
+            <candle :date="date" @change="onDateChange" />
+            <action class="col-md-5" v-if="$route.name === 'action'" :firstDate="firstDate" />
+          </div>
+          <div class="col-md-4">
+            <sub-total class="col-md-12"></sub-total>
+          </div>
         </div>
       </div>
     </div>
@@ -145,12 +149,11 @@
       onGetActions()
       {
         // get new action list
-        this.$root.subscriber.on('getActions', datas =>
+        this.$root.subscriber.on('getActions', res =>
         {
-          const firstData = _.first(datas)
-          if (firstData && firstData.date === this.date)
+          if (res.date === this.date)
           {
-            this.setActions(datas)
+            this.setActions(res.data)
           }
         })
       },

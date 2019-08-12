@@ -14,7 +14,7 @@ class DataCollectController
   async onInit(date)
   {
     this.socket.emitTo('getDatas', await dataService.getDatas(date), [this.socket.id])
-    this.socket.emitTo('getActions', await dataService.getActions(date), [this.socket.id])
+    this.socket.emitTo('getActions', {date, data: await dataService.getActions(date)}, [this.socket.id])
   }
 
   async onBordcast(data)
@@ -34,7 +34,7 @@ class DataCollectController
     {
       data.isCover = await dataService.doAction(data)
       this.socket.broadcastToAll('action', data)
-      this.socket.broadcastToAll('getActions', await dataService.getActions(data.date))
+      this.socket.broadcastToAll('getActions', {date, data: await dataService.getActions(data.date)})
     } catch (e)
     {
       console.log(e)

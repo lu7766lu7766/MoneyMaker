@@ -46,7 +46,9 @@ class DataService
       .whereNull('cover')
       .limit(1))
     // lock time
-    if (moment().format('YYYY-MM-DD HH:mm:00') === moment(data.created_at).format('YYYY-MM-DD HH:mm:00'))
+    const created_at_format = moment(data.created_at).format('YYYY-MM-DD HH:mm:00')
+    const now_format = moment().format('YYYY-MM-DD HH:mm:00')
+    if (created_at_format === now_format)
     {
       if (res)
       {
@@ -64,7 +66,7 @@ class DataService
         return false
       }
     }
-    throw 'not in transfer time'
+    throw `not in transfer time ${created_at_format} - ${now_format}`
   }
 
   async getDateList()
