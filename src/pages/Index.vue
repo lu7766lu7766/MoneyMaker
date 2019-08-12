@@ -139,7 +139,7 @@
         // when action write success
         this.$root.subscriber.on('action', data =>
         {
-          const sound = (!data.isCover
+          const sound = (!data.cover
             ? data.type > 0
               ? this.buySound
               : this.sellSound
@@ -151,11 +151,11 @@
       onGetActions()
       {
         // get new action list
-        this.$root.subscriber.on('getActions', res =>
+        this.$root.subscriber.on('getActions', datas =>
         {
-          if (res.date === this.date)
+          if (_.first(datas).date === this.date)
           {
-            this.setActions(res.data)
+            this.setActions(datas)
           }
         })
       },
