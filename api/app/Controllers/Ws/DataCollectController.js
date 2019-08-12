@@ -34,7 +34,7 @@ class DataCollectController
     {
       data.isCover = await dataService.doAction(data)
       this.socket.broadcastToAll('action', data)
-      this.socket.broadcastToAll('getActions', {date, data: await dataService.getActions(data.date)})
+      this.socket.broadcastToAll('getActions', {date: data.date, data: await dataService.getActions(data.date)})
     } catch (e)
     {
       console.log(e)
