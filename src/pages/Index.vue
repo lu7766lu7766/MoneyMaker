@@ -53,7 +53,7 @@
         channel: 'DataCollect',
         date: '',
         firstDate: null,
-        lastData: {},
+        lastData: null,
         time: moment().getDateTime(),
         timer: null,
         buySound: new Howl({
@@ -153,10 +153,6 @@
         // get new action list
         this.$root.subscriber.on('getActions', res =>
         {
-          if (!this.lastData)
-          {
-            this.lastData = _.last(res.data)
-          }
           if (res.date === this.date)
           {
             this.setActions(res.data)
@@ -167,8 +163,11 @@
       {
         this.$root.subscriber.on('getDatas', datas =>
         {
-          const firstData = _.first(datas)
-          if (firstData && firstData.date === this.date)
+          if (!this.lastData)
+          {
+            this.lastData = _.last(datas)
+          }
+          if (this.lastData.date === this.date)
           {
             this.setDatas(datas)
           }
