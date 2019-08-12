@@ -40,7 +40,7 @@
 <script>
   import IndexMixins from 'mixins/index'
   export default {
-    props: ['firstDate'],
+    props: ['firstDate', 'lastData'],
     mixins: [IndexMixins],
     data: () => ({
       price: 10000
@@ -58,21 +58,12 @@
       },
       addAction(type)
       {
-        const lastData = _.last(this.datas)
-
-        if (lastData)
-        {
-          this.$root.subscriber.emit('action', {
-            date: this.firstDate,
-            price: lastData.close,
-            type,
-            created_at: lastData.created_at
-          })
-        }
-        else
-        {
-          this.addTodoAction(type)
-        }
+        this.$root.subscriber.emit('action', {
+          date: this.firstDate,
+          price: lastData.close,
+          type,
+          created_at: lastData.created_at
+        })
       }
     }
   }

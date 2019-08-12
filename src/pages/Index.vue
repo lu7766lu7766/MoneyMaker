@@ -15,7 +15,7 @@
               資料時間：{{ lastTime }}
             </div>
             <candle :date="date" @change="onDateChange" />
-            <action class="col-md-12" v-if="$route.name === 'action'" :firstDate="firstDate" />
+            <action class="col-md-12" v-if="$route.name === 'action'" :firstDate="firstDate" :lastData="lastData" />
           </div>
           <div class="col-md-4">
             <sub-total class="col-md-12"></sub-total>
@@ -53,6 +53,7 @@
         channel: 'DataCollect',
         date: '',
         firstDate: null,
+        lastData: {},
         time: moment().getDateTime(),
         timer: null,
         buySound: new Howl({
@@ -119,6 +120,7 @@
         this.$root.subscriber.on('advice', data =>
         {
           console.log('advice')
+          this.lastData = data
           // always checking todoActions
           this.setTodoActions(_.filter(this.todoActions, action => {
             if (action.price < data.high && action.price > data.low) {
@@ -151,6 +153,10 @@
         // get new action list
         this.$root.subscriber.on('getActions', res =>
         {
+          if (!this.lastData)
+          {
+            this.lastData = _.last(res.data)
+          }
           if (res.date === this.date)
           {
             this.setActions(res.data)
