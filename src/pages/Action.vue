@@ -60,9 +60,9 @@
       {
         this.$root.subscriber.emit('action', {
           date: this.firstDate,
-          price: lastData.close,
+          price: this.lastData.close,
           type,
-          created_at: lastData.created_at
+          created_at: this.lastData.created_at
         })
       }
     }
