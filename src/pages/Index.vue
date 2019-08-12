@@ -15,7 +15,7 @@
               資料時間：{{ lastTime }}
             </div>
             <candle :date="date" @change="onDateChange" />
-            <action class="col-md-5" v-if="$route.name === 'action'" :firstDate="firstDate" />
+            <action class="col-md-12" v-if="$route.name === 'action'" :firstDate="firstDate" />
           </div>
           <div class="col-md-4">
             <sub-total class="col-md-12"></sub-total>
