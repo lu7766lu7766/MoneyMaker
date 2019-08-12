@@ -58,4 +58,7 @@
         padding-left 0
       th:last-child, td:last-child
         padding-right 0
+
+  .table td
+    padding 0.25rem !important
 </style>

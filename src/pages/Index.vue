@@ -7,13 +7,13 @@
     </b-navbar>
 
     <div class="layout-content">
-      <div>
-        目前時間： {{ time }} &nbsp;&nbsp;
-        資料時間：{{ lastTime }}
-      </div>
       <div class="container-fluid">
         <div class="row">
           <div class="col-md-8">
+            <div>
+              目前時間： {{ time }} &nbsp;&nbsp;
+              資料時間：{{ lastTime }}
+            </div>
             <candle :date="date" @change="onDateChange" />
             <action class="col-md-5" v-if="$route.name === 'action'" :firstDate="firstDate" />
           </div>
