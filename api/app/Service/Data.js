@@ -46,7 +46,7 @@ class DataService
       .whereNull('cover')
       .limit(1))
     // lock time
-    if (moment().format('YYYY-MM-DD HH:mm:00') === data.created_at)
+    if (moment().format('YYYY-MM-DD HH:mm:00') === moment(data.created_at).format('YYYY-MM-DD HH:mm:00'))
     {
       if (res)
       {
