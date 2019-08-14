@@ -46,11 +46,13 @@ class DataCollectController
 
   async onActions(datas) {
     try {
+      let date
       for(let data of datas) {
         data = await dataService.doAction(data)
+        date = data.date
         this.socket.broadcastToAll('action', data)
       }
-      this.socket.broadcastToAll('getActions', await dataService.getActions(data.date))
+      this.socket.broadcastToAll('getActions', await dataService.getActions(date))
     } catch(e) {
       console.log(e)
     }
