@@ -133,7 +133,9 @@
             }
             return true
           }))
-          this.$root.subscriber.emit('actions', datas)
+          if (datas.length) {
+            this.$root.subscriber.emit('actions', datas)
+          }
         })
       },
       onAction()
