@@ -122,9 +122,10 @@
           console.log('advice')
           this.lastData = data
           // always checking todoActions
+          const datas = []
           this.setTodoActions(_.filter(this.todoActions, action => {
             if (action.price < data.high && action.price > data.low) {
-              this.$root.subscriber.emit('action', Object.assign(action, {
+              datas.push(Object.assign(action, {
                 date: data.date,
                 created_at: data.created_at
               }))
@@ -132,6 +133,7 @@
             }
             return true
           }))
+          this.$root.subscriber.emit('actions', datas)
         })
       },
       onAction()

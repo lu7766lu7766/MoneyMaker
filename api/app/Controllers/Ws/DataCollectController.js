@@ -44,6 +44,18 @@ class DataCollectController
     }
   }
 
+  async onActions(datas) {
+    try {
+      for(let data of datas) {
+        data = await dataService.doAction(data)
+        this.socket.broadcastToAll('action', data)
+      }
+      this.socket.broadcastToAll('getActions', await dataService.getActions(data.date))
+    } catch(e) {
+      console.log(e)
+    }
+  }
+
   async onGetDateList()
   {
     this.socket.emitTo('getDateList', await dataService.getDateList(), [this.socket.id])
