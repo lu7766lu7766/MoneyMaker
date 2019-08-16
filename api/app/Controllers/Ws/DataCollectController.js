@@ -24,9 +24,9 @@ class DataCollectController
     // console.log(data)
     await dataService.doAdvice(data)
 
-    this.socket.broadcast('getDateList', await dataService.getDateList())
-    this.socket.broadcast('advice', data)
-    this.socket.broadcast('getDatas', await dataService.getDatas(data.date))
+    this.socket.broadcastToAll('getDateList', await dataService.getDateList())
+    this.socket.broadcastToAll('advice', data)
+    this.socket.broadcastToAll('getDatas', await dataService.getDatas(data.date))
   }
 
   async onAction(data)

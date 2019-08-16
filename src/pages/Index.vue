@@ -124,7 +124,7 @@
           // always checking todoActions
           const datas = []
           this.setTodoActions(_.filter(this.todoActions, action => {
-            if (action.price < data.high && action.price > data.low) {
+            if (action.price <= data.high && action.price >= data.low) {
               datas.push(Object.assign(action, {
                 date: data.date,
                 created_at: data.created_at

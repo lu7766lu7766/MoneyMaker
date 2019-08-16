@@ -15,6 +15,7 @@
         <div class="input-group doing">
           <b-button variant="danger" @click="addAction(1)">現買</b-button>
           <b-button variant="primary" @click="addAction(-1)">現賣</b-button>
+          <!--<b-button variant="info" v-if="isLocalhost" @click="testAdvice">測試advice</b-button>-->
         </div>
       </div>
     </div>
@@ -64,6 +65,15 @@
           type,
           created_at: this.lastData.created_at
         })
+      },
+      testAdvice()
+      {
+        this.$root.subscriber.emit('bordcast', JSON.stringify(this.lastData))
+      }
+    },
+    computed: {
+      isLocalhost() {
+        return location.host.indexOf('localhost') > -1
       }
     }
   }
