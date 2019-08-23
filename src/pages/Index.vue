@@ -78,14 +78,12 @@
         this.ws.on('close', e =>
         {
           console.error('close: ', e)
-          this.ws = null
-          this.wsReconnect()
+          location.reload()
         })
         this.ws.on('error', e =>
         {
           console.error('error: ', e)
-          this.ws = null
-          this.wsReconnect()
+          location.reload()
         })
         return new Promise(resolve => {
           this.ws.on('open', () =>
@@ -102,17 +100,6 @@
             resolve(1)
           })
         })
-      },
-      wsReconnect()
-      {
-        if (!this.ws)
-        {
-          setTimeout(async () =>
-          {
-            await this.wsInit()
-            this.wsReconnect()
-          }, 1000)
-        }
       },
       onAdvice()
       {
