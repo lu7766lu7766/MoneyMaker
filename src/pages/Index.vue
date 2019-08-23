@@ -109,9 +109,10 @@
           console.log('advice')
           this.lastData = data
           // always checking todoActions
+          const datas = []
           this.setTodoActions(_.filter(this.todoActions, action => {
-            if (action.price < data.high && action.price > data.low) {
-              this.$root.subscriber.emit('action', Object.assign(action, {
+            if (action.price <= data.high && action.price >= data.low) {
+              datas.push(Object.assign(action, {
                 date: data.date,
                 created_at: data.created_at
               }))
@@ -119,6 +120,9 @@
             }
             return true
           }))
+          if (datas.length) {
+            this.$root.subscriber.emit('actions', datas)
+          }
         })
       },
       onAction()
@@ -126,7 +130,7 @@
         // when action write success
         this.$root.subscriber.on('action', data =>
         {
-          const sound = (!data.isCover
+          const sound = (!data.cover
             ? data.type > 0
               ? this.buySound
               : this.sellSound
@@ -138,11 +142,11 @@
       onGetActions()
       {
         // get new action list
-        this.$root.subscriber.on('getActions', res =>
+        this.$root.subscriber.on('getActions', datas =>
         {
-          if (res.date === this.date)
+          if (_.first(datas).date === this.date)
           {
-            this.setActions(res.data)
+            this.setActions(datas)
           }
         })
       },

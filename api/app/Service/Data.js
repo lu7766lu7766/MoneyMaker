@@ -1,5 +1,6 @@
 const ActionModel = use('Models/Action')
 const FimtxnModel = use('Models/Fimtxn')
+const Env = use('Env')
 
 class DataService
 {
@@ -48,7 +49,7 @@ class DataService
     // lock time
     const created_at_format = moment(data.created_at).format('YYYY-MM-DD HH:mm:00')
     const now_format = moment().format('YYYY-MM-DD HH:mm:00')
-    if (created_at_format === now_format)
+    if (created_at_format === now_format || Env.get('NODE_ENV') === 'development')
     {
       if (res)
       {
@@ -57,13 +58,13 @@ class DataService
           'cover': data.price,
           'updated_at': data.created_at
         }).where('id', res.id)
-        return true
+        return _.first(await DB.table('actions').whereNotNull('cover').orderBy('id', 'desc').limit(1))
       }
       else
       {
         // 下單
         await DB.table('actions').insert(data)
-        return false
+        return data
       }
     }
     throw `not in transfer time ${created_at_format} - ${now_format}`
