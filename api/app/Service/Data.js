@@ -67,7 +67,7 @@ class DataService
         return data
       }
     }
-    throw `not in transfer time ${created_at_format} - ${now_format}`
+    console.log(`not in transfer time ${created_at_format} - ${now_format}`) 
   }
 
   async getDateList()

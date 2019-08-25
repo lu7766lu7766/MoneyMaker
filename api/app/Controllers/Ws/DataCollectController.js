@@ -21,12 +21,14 @@ class DataCollectController
   async onBordcast(data)
   {
     data = JSON.parse(data)
-    // console.log(data)
+    console.log(`advice start at: ${moment().getDateTime()}`)
     await dataService.doAdvice(data)
-
-    this.socket.broadcastToAll('getDateList', await dataService.getDateList())
+    console.log('doAdvice success!')
     this.socket.broadcastToAll('advice', data)
+    console.log('broadcast success!')
+    this.socket.broadcastToAll('getDateList', await dataService.getDateList())
     this.socket.broadcastToAll('getDatas', await dataService.getDatas(data.date))
+    console.log(`advice end at: ${moment().getDateTime()}`)
   }
 
   async onAction(data)

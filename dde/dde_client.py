@@ -36,7 +36,8 @@ def fimtxnReciver(value, item):
     return
 
   # now = newValue[0]
-  now = (datetime.strptime(newValue[0], "%Y/%m/%d  %H:%M:%S") - timedelta(days=1)).strftime("%Y-%m-%d %H:%M:%S")
+  # now = (datetime.strptime(newValue[0], "%Y/%m/%d %H:%M:%S") - timedelta(days=1)).strftime("%Y-%m-%d %H:%M:%S")
+  now = datetime.now().strftime("%Y-%m-%d") + " " +datetime.strptime(newValue[0], "%Y/%m/%d %H:%M:%S").strftime("%H:%M:%S")
   open = newValue[1]
   high = newValue[2]
   low = newValue[3]
