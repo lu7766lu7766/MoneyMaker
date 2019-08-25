@@ -144,7 +144,7 @@
         // get new action list
         this.$root.subscriber.on('getActions', datas =>
         {
-          if (_.first(datas).date === this.date)
+          if (!datas.length || _.first(datas).date === this.date)
           {
             this.setActions(datas)
           }
