@@ -49,7 +49,8 @@ class DataService
     // lock time
     const created_at_format = moment(data.created_at).format('YYYY-MM-DD HH:mm:00')
     const now_format = moment().format('YYYY-MM-DD HH:mm:00')
-    if (created_at_format === now_format || Env.get('NODE_ENV') === 'development')
+    if (Math.abs(moment().diff(data.created_at, 'seconds')) < Env.get('ACTION_SECS', 70)
+      || Env.get('NODE_ENV') === 'development')
     {
       if (res)
       {
@@ -67,7 +68,7 @@ class DataService
         return data
       }
     }
-    console.log(`not in transfer time ${created_at_format} - ${now_format}`) 
+    throw `not in transfer time ${created_at_format} - ${now_format}`
   }
 
   async getDateList()
