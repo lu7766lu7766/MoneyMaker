@@ -11,6 +11,8 @@
           </b-button-group>
         </div>
       </div>
+      <br/>
+      <br/>
       <div class="form-group">
         <div class="input-group doing">
           <b-button variant="danger" @click="addAction(1)">現買</b-button>
