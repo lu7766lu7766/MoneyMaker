@@ -21,16 +21,34 @@ class DataCollectController
   async onBordcast(data)
   {
     data = JSON.parse(data)
-    // console.log(data)
+    Log.info(JSON.stringify({
+      type: 'advice',
+      data
+    }))
     await dataService.doAdvice(data)
-
-    this.socket.broadcastToAll('getDateList', await dataService.getDateList())
+    Log.info(JSON.stringify({
+      type: 'advice',
+      data: 'doAdvice success!'
+    }))
     this.socket.broadcastToAll('advice', data)
+    Log.info(JSON.stringify({
+      type: 'advice',
+      data: 'broadcast success!'
+    }))
+    this.socket.broadcastToAll('getDateList', await dataService.getDateList())
     this.socket.broadcastToAll('getDatas', await dataService.getDatas(data.date))
+    Log.info(JSON.stringify({
+      type: 'advice',
+      data: `advice end at: ${moment().getDateTime()}`
+    }))
   }
 
   async onAction(data)
   {
+    Log.info(JSON.stringify({
+      type: 'action',
+      data
+    }))
     // this.socket.broadcastToAll('action', await dataService.doAction(data, date))
     try
     {
@@ -40,22 +58,32 @@ class DataCollectController
       this.socket.broadcastToAll('getActions', await dataService.getActions(data.date))
     } catch (e)
     {
+      Log.error(JSON.stringify({
+        msg: e
+      }))
       console.log(e)
     }
   }
 
   async onActions(datas) {
-    try {
-      let date
-      for(let data of datas) {
+    Log.info(JSON.stringify({
+      type: 'actions',
+      datas
+    }))
+    let date
+    for (let data of datas)
+    {
+      try
+      {
         data = await dataService.doAction(data)
         date = data.date
         this.socket.broadcastToAll('action', data)
+      } catch (e)
+      {
+        console.log(e)
       }
-      this.socket.broadcastToAll('getActions', await dataService.getActions(date))
-    } catch(e) {
-      console.log(e)
     }
+    this.socket.broadcastToAll('getActions', await dataService.getActions(date))
   }
 
   async onGetDateList()

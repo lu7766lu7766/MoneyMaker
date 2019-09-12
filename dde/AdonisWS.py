@@ -5,6 +5,7 @@ except ImportError:
   import _thread as thread
 import time
 import json
+from datetime import datetime
 
 
 def JSONstrigify(obj):
@@ -50,5 +51,5 @@ class Client:
     while True:
       time.sleep(self.wait_secs)
       self.__ws.send(JSONstrigify({"t":8}))
-      # result = self.__ws.recv()
-      # print("Received '%s'" % result)
+      result = self.__ws.recv()
+      print("Received '%s' at: %s" % (result, datetime.now().strftime("%Y-%m-%d %H:%M:%S")))
