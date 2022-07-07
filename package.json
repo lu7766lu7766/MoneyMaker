@@ -21,7 +21,7 @@
     "echarts-amap": "^1.4.15-rc.1",
     "howler": "^2.1.2",
     "lodash": "^4.17.14",
-    "moment": "^2.24.0",
+    "moment": "^2.29.4",
     "stylus": "^0.54.5",
     "stylus-loader": "^3.0.2",
     "v-charts": "^1.19.0",
